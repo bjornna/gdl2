@@ -1,0 +1,1281 @@
+{
+  "gdl_version": "0.1",
+  "id": "Stroke_prevention_dashboard_case.v1",
+  "concept": "gt0001",
+  "language": {
+    "original_language": "ISO_639-1::en"
+  },
+  "description": {
+    "original_author": {
+      "date": "2014-04-14",
+      "name": "Konstantinos Kalliamvakos",
+      "organisation": "Cambio Healthcare Systems",
+      "email": "Konstantinos.Kalliamvakos@cambio.se"
+    },
+    "lifecycle_state": "Author draft",
+    "details": {
+      "sv": {
+        "id": "sv",
+        "purpose": "För att indikera information som produceras från Stroke prevention CDS App.",
+        "keywords": [
+          "CHA2DS2-VASc",
+          "stroke",
+          "profylax",
+          "förmaksflimmer"
+        ],
+        "use": "Används för specifikationerna av Stroke prevention studien.",
+        "misuse": "",
+        "copyright": "Cambio Healthcare Systems"
+      },
+      "en": {
+        "id": "en",
+        "purpose": "To indicate data produced from the stroke prevention clinical decision support.",
+        "keywords": [
+          "CHA2DS2-VASc",
+          "stroke",
+          "prevention",
+          "atrial fibrillation"
+        ],
+        "use": "Use for the needs of the stroke prevention study.",
+        "copyright": "Cambio Healthcare Systems"
+      }
+    }
+  },
+  "definition": {
+    "default_actions": [
+      "$gt0046=local::at0031|Diagnosis not changed|",
+      "$gt0023=local::at0031|Diagnosis not changed|",
+      "$gt0022=local::at0031|Diagnosis not changed|",
+      "$gt0021=local::at0031|Diagnosis not changed|",
+      "$gt0020=local::at0031|Diagnosis not changed|",
+      "$gt0019=local::at0031|Diagnosis not changed|",
+      "$gt0018=local::at0031|Diagnosis not changed|"
+    ],
+    "data_bindings": {
+      "gt0065": {
+        "id": "gt0065",
+        "model_id": "openEHR-EHR-EVALUATION.chadsvas_diagnosis_review.v1",
+        "elements": {
+          "gt0032": {
+            "id": "gt0032",
+            "path": "/data[at0001]/items[at0041]"
+          },
+          "gt0030": {
+            "id": "gt0030",
+            "path": "/data[at0001]/items[at0037]"
+          },
+          "gt0031": {
+            "id": "gt0031",
+            "path": "/data[at0001]/items[at0039]"
+          },
+          "gt0029": {
+            "id": "gt0029",
+            "path": "/data[at0001]/items[at0038]"
+          },
+          "gt0026": {
+            "id": "gt0026",
+            "path": "/data[at0001]/items[at0035]"
+          },
+          "gt0027": {
+            "id": "gt0027",
+            "path": "/data[at0001]/items[at0036]"
+          },
+          "gt0028": {
+            "id": "gt0028",
+            "path": "/data[at0001]/items[at0040]"
+          }
+        }
+      },
+      "gt0066": {
+        "id": "gt0066",
+        "model_id": "openEHR-EHR-EVALUATION.stroke_prevention_review.v1",
+        "elements": {
+          "gt0070": {
+            "id": "gt0070",
+            "path": "/data[at0001]/items[at0008]"
+          },
+          "gt0071": {
+            "id": "gt0071",
+            "path": "/data[at0001]/items[at0013]"
+          },
+          "gt0025": {
+            "id": "gt0025",
+            "path": "/data[at0001]/items[at0012]"
+          }
+        },
+        "predicates": [
+          "max(/data[at0001]/items[at0007])"
+        ]
+      },
+      "gt0068": {
+        "id": "gt0068",
+        "model_id": "openEHR-EHR-EVALUATION.stroke_prevention_dashboard_utility.v1",
+        "elements": {
+          "gt0021": {
+            "id": "gt0021",
+            "path": "/data[at0001]/items[at0024]/items[at0028]"
+          },
+          "gt0022": {
+            "id": "gt0022",
+            "path": "/data[at0001]/items[at0024]/items[at0029]"
+          },
+          "gt0023": {
+            "id": "gt0023",
+            "path": "/data[at0001]/items[at0024]/items[at0030]"
+          },
+          "gt0046": {
+            "id": "gt0046",
+            "path": "/data[at0001]/items[at0024]/items[at0033]"
+          },
+          "gt0073": {
+            "id": "gt0073",
+            "path": "/data[at0001]/items[at0050]"
+          },
+          "gt0020": {
+            "id": "gt0020",
+            "path": "/data[at0001]/items[at0024]/items[at0027]"
+          },
+          "gt0018": {
+            "id": "gt0018",
+            "path": "/data[at0001]/items[at0024]/items[at0025]"
+          },
+          "gt0019": {
+            "id": "gt0019",
+            "path": "/data[at0001]/items[at0024]/items[at0026]"
+          },
+          "gt0058": {
+            "id": "gt0058",
+            "path": "/data[at0001]/items[at0034]"
+          },
+          "gt0017": {
+            "id": "gt0017",
+            "path": "/data[at0001]/items[at0007]"
+          }
+        }
+      },
+      "gt0061": {
+        "id": "gt0061",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0040": {
+            "id": "gt0040",
+            "path": "/data[at0001]/items[at0003]"
+          },
+          "gt0039": {
+            "id": "gt0039",
+            "path": "/data[at0001]/items[at0002.1]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0039|Congestive heart failure diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      },
+      "gt0062": {
+        "id": "gt0062",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0037": {
+            "id": "gt0037",
+            "path": "/data[at0001]/items[at0002.1]"
+          },
+          "gt0038": {
+            "id": "gt0038",
+            "path": "/data[at0001]/items[at0003]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0037|Hypertension diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      },
+      "gt0063": {
+        "id": "gt0063",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0035": {
+            "id": "gt0035",
+            "path": "/data[at0001]/items[at0002.1]"
+          },
+          "gt0036": {
+            "id": "gt0036",
+            "path": "/data[at0001]/items[at0003]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0035|Diabetes diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      },
+      "gt0074": {
+        "id": "gt0074",
+        "model_id": "openEHR-EHR-OBSERVATION.responsible_primary_care_unit.v1",
+        "elements": {
+          "gt0075": {
+            "id": "gt0075",
+            "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+          }
+        },
+        "predicates": [
+          "max(/data[at0001]/events[at0002]/data[at0003]/items[at0005])"
+        ]
+      },
+      "gt0064": {
+        "id": "gt0064",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0033": {
+            "id": "gt0033",
+            "path": "/data[at0001]/items[at0002.1]"
+          },
+          "gt0034": {
+            "id": "gt0034",
+            "path": "/data[at0001]/items[at0003]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0033|Atrial fibrillation diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      },
+      "gt0060": {
+        "id": "gt0060",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0041": {
+            "id": "gt0041",
+            "path": "/data[at0001]/items[at0002.1]"
+          },
+          "gt0042": {
+            "id": "gt0042",
+            "path": "/data[at0001]/items[at0003]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0041|Stroke/TIA/Thromboembolism diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      },
+      "gt0069": {
+        "id": "gt0069",
+        "model_id": "openEHR-EHR-OBSERVATION.chadsvas_score.v1",
+        "elements": {
+          "gt0057": {
+            "id": "gt0057",
+            "path": "/data[at0002]/events[at0003]/data[at0001]/items[at0099]"
+          }
+        }
+      },
+      "gt0059": {
+        "id": "gt0059",
+        "model_id": "openEHR-EHR-EVALUATION.problem-diagnosis.v1",
+        "elements": {
+          "gt0043": {
+            "id": "gt0043",
+            "path": "/data[at0001]/items[at0002.1]"
+          },
+          "gt0044": {
+            "id": "gt0044",
+            "path": "/data[at0001]/items[at0003]"
+          }
+        },
+        "predicates": [
+          "/data[at0001]/items[at0002.1] is_a local::gt0043|Vascular disease diagnosis code|",
+          "max(/data[at0001]/items[at0003])"
+        ]
+      }
+    },
+    "rules": {
+      "gt0007": {
+        "id": "gt0007",
+        "when": [
+          "$gt0025==7,d"
+        ],
+        "then": [
+          "$gt0017=local::at0017|7 days|"
+        ],
+        "priority": 21
+      },
+      "gt0008": {
+        "id": "gt0008",
+        "when": [
+          "$gt0025==30,d"
+        ],
+        "then": [
+          "$gt0017=local::at0018|30 days|"
+        ],
+        "priority": 20
+      },
+      "gt0009": {
+        "id": "gt0009",
+        "when": [
+          "$gt0025==365,d"
+        ],
+        "then": [
+          "$gt0017=local::at0019|365 days|"
+        ],
+        "priority": 19
+      },
+      "gt0014": {
+        "id": "gt0014",
+        "when": [
+          "$gt0026==1|local::at0051|Present|",
+          "$gt0022==local::at0031|Diagnosis not changed|",
+          "(($gt0030==0|local::at0050|Absent|)&&(($gt0041!=null)&&($gt0032>$gt0042)))||(($gt0030==1|local::at0051|Present|)&&($gt0041==null))"
+        ],
+        "then": [
+          "$gt0022=local::at0032|Diagnosis changed|",
+          "$gt0046=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 14
+      },
+      "gt0047": {
+        "id": "gt0047",
+        "when": [
+          "$gt0057==0"
+        ],
+        "then": [
+          "$gt0058=local::at0035|0|"
+        ],
+        "priority": 12
+      },
+      "gt0015": {
+        "id": "gt0015",
+        "when": [
+          "$gt0026==1|local::at0051|Present|",
+          "$gt0023==local::at0031|Diagnosis not changed|",
+          "(($gt0031==0|local::at0050|Absent|)&&(($gt0043!=null)&&($gt0032>$gt0044)))||(($gt0031==1|local::at0051|Present|)&&($gt0043==null))"
+        ],
+        "then": [
+          "$gt0023=local::at0032|Diagnosis changed|",
+          "$gt0046=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 13
+      },
+      "gt0048": {
+        "id": "gt0048",
+        "when": [
+          "$gt0057==1"
+        ],
+        "then": [
+          "$gt0058=local::at0036|1|"
+        ],
+        "priority": 11
+      },
+      "gt0049": {
+        "id": "gt0049",
+        "when": [
+          "$gt0057==2"
+        ],
+        "then": [
+          "$gt0058=local::at0037|2|"
+        ],
+        "priority": 10
+      },
+      "gt0010": {
+        "id": "gt0010",
+        "when": [
+          "$gt0018==local::at0031|Diagnosis not changed|",
+          "(($gt0026==0|local::at0050|Absent|)&&(($gt0033!=null)&&($gt0032>$gt0034)))||(($gt0026==1|local::at0051|Present|)&&($gt0033==null))"
+        ],
+        "then": [
+          "$gt0046=local::at0032|Diagnosis changed|",
+          "$gt0018=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 18
+      },
+      "gt0054": {
+        "id": "gt0054",
+        "when": [
+          "$gt0057==7"
+        ],
+        "then": [
+          "$gt0058=local::at0042|7|"
+        ],
+        "priority": 5
+      },
+      "gt0011": {
+        "id": "gt0011",
+        "when": [
+          "$gt0026==1|local::at0051|Present|",
+          "$gt0019==local::at0031|Diagnosis not changed|",
+          "(($gt0027==0|local::at0050|Absent|)&&(($gt0035!=null)&&($gt0032>$gt0036)))||(($gt0027==1|local::at0051|Present|)&&($gt0035==null))"
+        ],
+        "then": [
+          "$gt0019=local::at0032|Diagnosis changed|",
+          "$gt0046=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 17
+      },
+      "gt0055": {
+        "id": "gt0055",
+        "when": [
+          "$gt0057==8"
+        ],
+        "then": [
+          "$gt0058=local::at0043|8|"
+        ],
+        "priority": 4
+      },
+      "gt0012": {
+        "id": "gt0012",
+        "when": [
+          "$gt0026==1|local::at0051|Present|",
+          "$gt0020==local::at0031|Diagnosis not changed|",
+          "(($gt0028==0|local::at0050|Absent|)&&(($gt0037!=null)&&($gt0032>$gt0038)))||(($gt0028==1|local::at0051|Present|)&&($gt0037==null))"
+        ],
+        "then": [
+          "$gt0020=local::at0032|Diagnosis changed|",
+          "$gt0046=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 16
+      },
+      "gt0056": {
+        "id": "gt0056",
+        "when": [
+          "$gt0057==9"
+        ],
+        "then": [
+          "$gt0058=local::at0044|9|"
+        ],
+        "priority": 3
+      },
+      "gt0078": {
+        "id": "gt0078",
+        "when": [
+          "!fired($gt0078)",
+          "$gt0075 is_a local::gt0076|CDS group|"
+        ],
+        "then": [
+          "$gt0073=local::at0051|CDS group|"
+        ],
+        "priority": 2
+      },
+      "gt0013": {
+        "id": "gt0013",
+        "when": [
+          "$gt0026==1|local::at0051|Present|",
+          "$gt0021==local::at0031|Diagnosis not changed|",
+          "(($gt0029==0|local::at0050|Absent|)&&(($gt0039!=null)&&($gt0032>$gt0040)))||(($gt0029==1|local::at0051|Present|)&&($gt0039==null))"
+        ],
+        "then": [
+          "$gt0021=local::at0032|Diagnosis changed|",
+          "$gt0046=local::at0032|Diagnosis changed|"
+        ],
+        "priority": 15
+      },
+      "gt0079": {
+        "id": "gt0079",
+        "when": [
+          "!fired($gt0079)",
+          "$gt0075 is_a local::gt0077|Control group|"
+        ],
+        "then": [
+          "$gt0073=local::at0052|Control group|"
+        ],
+        "priority": 1
+      },
+      "gt0050": {
+        "id": "gt0050",
+        "when": [
+          "$gt0057==3"
+        ],
+        "then": [
+          "$gt0058=local::at0038|3|"
+        ],
+        "priority": 9
+      },
+      "gt0072": {
+        "id": "gt0072",
+        "when": [
+          "$gt0025==1,d"
+        ],
+        "then": [
+          "$gt0017=local::at0045|1 day|"
+        ],
+        "priority": 22
+      },
+      "gt0051": {
+        "id": "gt0051",
+        "when": [
+          "$gt0057==4"
+        ],
+        "then": [
+          "$gt0058=local::at0039|4|"
+        ],
+        "priority": 8
+      },
+      "gt0052": {
+        "id": "gt0052",
+        "when": [
+          "$gt0057==5"
+        ],
+        "then": [
+          "$gt0058=local::at0040|5|"
+        ],
+        "priority": 7
+      },
+      "gt0053": {
+        "id": "gt0053",
+        "when": [
+          "$gt0057==6"
+        ],
+        "then": [
+          "$gt0058=local::at0041|6|"
+        ],
+        "priority": 6
+      }
+    }
+  },
+  "ontology": {
+    "term_definitions": {
+      "sv": {
+        "id": "sv",
+        "terms": {
+          "gt0029": {
+            "id": "gt0029",
+            "text": "Hjärtsvikt/VK-dysfunktion",
+            "description": ""
+          },
+          "gt0025": {
+            "id": "gt0025",
+            "text": "Beslutet uppskjutet",
+            "description": ""
+          },
+          "gt0026": {
+            "id": "gt0026",
+            "text": "Förmaksflimmer",
+            "description": ""
+          },
+          "gt0027": {
+            "id": "gt0027",
+            "text": "Diabetes",
+            "description": ""
+          },
+          "gt0028": {
+            "id": "gt0028",
+            "text": "Hypertoni",
+            "description": ""
+          },
+          "gt0021": {
+            "id": "gt0021",
+            "text": "Hjärtsvikt/VK-dysfunktion omvärdering",
+            "description": ""
+          },
+          "gt0022": {
+            "id": "gt0022",
+            "text": "Stroke/TIA/Tromboembolism omvärdering",
+            "description": ""
+          },
+          "gt0023": {
+            "id": "gt0023",
+            "text": "Vaskulär sjukdom omvärdering",
+            "description": ""
+          },
+          "gt0020": {
+            "id": "gt0020",
+            "text": "Hypertoni omvärdering",
+            "description": ""
+          },
+          "gt0018": {
+            "id": "gt0018",
+            "text": "Förmaksflimmer omvärdering",
+            "description": ""
+          },
+          "gt0019": {
+            "id": "gt0019",
+            "text": "Diabetes omvärdering",
+            "description": ""
+          },
+          "gt0014": {
+            "id": "gt0014",
+            "text": "Ange Stroke/TIA/Tromboembolism omvärdering till Diagnos ändrad"
+          },
+          "gt0058": {
+            "id": "gt0058",
+            "text": "CHA2DS2-VASc poäng",
+            "description": ""
+          },
+          "gt0015": {
+            "id": "gt0015",
+            "text": "Ange Vaskulär sjukdom omvärdering till Diagnos ändrad"
+          },
+          "gt0017": {
+            "id": "gt0017",
+            "text": "Beslut uppskjutet",
+            "description": ""
+          },
+          "gt0010": {
+            "id": "gt0010",
+            "text": "Ange Förmaksflimmer omvärdering till Diagnos ändrad"
+          },
+          "gt0054": {
+            "id": "gt0054",
+            "text": "Ange CHA2DS2-VASc poäng  7"
+          },
+          "gt0011": {
+            "id": "gt0011",
+            "text": "Ange Diabetes omvärdering till Diagnos ändrad"
+          },
+          "gt0055": {
+            "id": "gt0055",
+            "text": "Ange CHA2DS2-VASc poäng  8"
+          },
+          "gt0012": {
+            "id": "gt0012",
+            "text": "Ange Hypertoni omvärdering till Diagnos ändrad"
+          },
+          "gt0056": {
+            "id": "gt0056",
+            "text": "Ange CHA2DS2-VASc poäng  9"
+          },
+          "gt0013": {
+            "id": "gt0013",
+            "text": "Ange Hjärtsvikt/VK-dysfunktion omvärdering till Diagnos ändrad"
+          },
+          "gt0057": {
+            "id": "gt0057",
+            "text": "Total poäng",
+            "description": ""
+          },
+          "gt0050": {
+            "id": "gt0050",
+            "text": "Ange CHA2DS2-VASc poäng  3"
+          },
+          "gt0051": {
+            "id": "gt0051",
+            "text": "Ange CHA2DS2-VASc poäng  4"
+          },
+          "gt0052": {
+            "id": "gt0052",
+            "text": "Ange CHA2DS2-VASc poäng  5"
+          },
+          "gt0053": {
+            "id": "gt0053",
+            "text": "Ange CHA2DS2-VASc poäng  6"
+          },
+          "gt0007": {
+            "id": "gt0007",
+            "text": "Ange beslut uppskjutet i 7 dagar"
+          },
+          "gt0008": {
+            "id": "gt0008",
+            "text": "Ange beslut uppskjutet i 30 dagar"
+          },
+          "gt0009": {
+            "id": "gt0009",
+            "text": "Ange beslut uppskjutet i 365 dagar"
+          },
+          "gt0047": {
+            "id": "gt0047",
+            "text": "Ange CHA2DS2-VASc poäng  0"
+          },
+          "gt0048": {
+            "id": "gt0048",
+            "text": "Ange CHA2DS2-VASc poäng  1"
+          },
+          "gt0049": {
+            "id": "gt0049",
+            "text": "Ange CHA2DS2-VASc poäng  2"
+          },
+          "gt0043": {
+            "id": "gt0043",
+            "text": "Vaskulär sjukdom diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0044": {
+            "id": "gt0044",
+            "text": "Vaskulär sjukdom tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0001": {
+            "id": "gt0001",
+            "text": "Stroke prevention dashboard utility",
+            "description": "Utility riktlinjer för att assistera med kliniska beslutsstödsindikatorer för stroke prevention som inte kan genereras från de primära Stroke prevention riktlinjerna."
+          },
+          "gt0045": {
+            "id": "gt0045",
+            "text": "Ange enhet till okänd"
+          },
+          "gt0046": {
+            "id": "gt0046",
+            "text": "Omvärdering av diagnos",
+            "description": ""
+          },
+          "gt0040": {
+            "id": "gt0040",
+            "text": "Hjärtsvikt/VK-dysfunktion tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0041": {
+            "id": "gt0041",
+            "text": "Stroke/TIA/Tromboembolism diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0042": {
+            "id": "gt0042",
+            "text": "Stroke/TIA/Tromboembolism tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0036": {
+            "id": "gt0036",
+            "text": "Diabetes tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0037": {
+            "id": "gt0037",
+            "text": "Hypertoni diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0038": {
+            "id": "gt0038",
+            "text": "Hypertoni tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0039": {
+            "id": "gt0039",
+            "text": "Hjärtsvikt/VK-dysfunktion diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0032": {
+            "id": "gt0032",
+            "text": "Tidpunkt för översikt av diagnos",
+            "description": ""
+          },
+          "gt0076": {
+            "id": "gt0076",
+            "text": "CDS grupp"
+          },
+          "gt0033": {
+            "id": "gt0033",
+            "text": "Förmaksflimmer diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0077": {
+            "id": "gt0077",
+            "text": "Kontrollgrupp"
+          },
+          "gt0034": {
+            "id": "gt0034",
+            "text": "Förmaksflimmer tidpunkt för inledning",
+            "description": "*The date that the problem began causing symptoms or signs (en)"
+          },
+          "gt0078": {
+            "id": "gt0078",
+            "text": "Ange studiepopulation till CDS grupp"
+          },
+          "gt0035": {
+            "id": "gt0035",
+            "text": "Diabetes diagnos",
+            "description": "*The index diagnosis (en)"
+          },
+          "gt0079": {
+            "id": "gt0079",
+            "text": "Ange studiepopulation till kontrollgrupp"
+          },
+          "gt0072": {
+            "id": "gt0072",
+            "text": "Ange beslut uppskjutet i 1 dag"
+          },
+          "gt0073": {
+            "id": "gt0073",
+            "text": "Studiepopulation",
+            "description": "*(en) *"
+          },
+          "gt0030": {
+            "id": "gt0030",
+            "text": "Stroke/TIA/Tromboembolism",
+            "description": ""
+          },
+          "gt0031": {
+            "id": "gt0031",
+            "text": "Vaskulär sjukdom",
+            "description": ""
+          },
+          "gt0075": {
+            "id": "gt0075",
+            "text": "Listad på",
+            "description": "*(en) *"
+          },
+          "gt0070": {
+            "id": "gt0070",
+            "text": "Orsak till att avstå behandling",
+            "description": ""
+          },
+          "gt0071": {
+            "id": "gt0071",
+            "text": "Orsak till uppskjutet beslut",
+            "description": ""
+          }
+        }
+      },
+      "en": {
+        "id": "en",
+        "terms": {
+          "gt0029": {
+            "id": "gt0029",
+            "text": "Congestive heart failure review",
+            "description": "*"
+          },
+          "gt0025": {
+            "id": "gt0025",
+            "text": "Decision delayed ",
+            "description": "*"
+          },
+          "gt0026": {
+            "id": "gt0026",
+            "text": "Atrial fibrillation review",
+            "description": "*"
+          },
+          "gt0027": {
+            "id": "gt0027",
+            "text": "Diabetes review",
+            "description": "*"
+          },
+          "gt0028": {
+            "id": "gt0028",
+            "text": "Hypertension review",
+            "description": "*"
+          },
+          "gt0021": {
+            "id": "gt0021",
+            "text": "Congestive heart failure override",
+            "description": "*"
+          },
+          "gt0022": {
+            "id": "gt0022",
+            "text": "Stroke/TIA/Thromboembolism override",
+            "description": "*"
+          },
+          "gt0023": {
+            "id": "gt0023",
+            "text": "Vascular disease override",
+            "description": "*"
+          },
+          "gt0020": {
+            "id": "gt0020",
+            "text": "Hypertension override",
+            "description": "*"
+          },
+          "gt0018": {
+            "id": "gt0018",
+            "text": "Atrial Fibrillation override",
+            "description": "*"
+          },
+          "gt0019": {
+            "id": "gt0019",
+            "text": "Diabetes override",
+            "description": "*"
+          },
+          "gt0014": {
+            "id": "gt0014",
+            "text": "Set Stroke/TIA/Thromboembolism override to diagnosis changed"
+          },
+          "gt0058": {
+            "id": "gt0058",
+            "text": "CHA2DS2-VASc score",
+            "description": "*"
+          },
+          "gt0015": {
+            "id": "gt0015",
+            "text": "Set Vascular disease override"
+          },
+          "gt0017": {
+            "id": "gt0017",
+            "text": "Decision postponed",
+            "description": "*"
+          },
+          "gt0010": {
+            "id": "gt0010",
+            "text": "Set Atrial fibrillation override to diagnosis changed"
+          },
+          "gt0054": {
+            "id": "gt0054",
+            "text": "Set CHA2DS2-VASc score 7"
+          },
+          "gt0011": {
+            "id": "gt0011",
+            "text": "Set Diabetes override to diagnosis changed"
+          },
+          "gt0055": {
+            "id": "gt0055",
+            "text": "Set CHA2DS2-VASc score 8"
+          },
+          "gt0012": {
+            "id": "gt0012",
+            "text": "Set Hypertension override to diagnosis changed"
+          },
+          "gt0056": {
+            "id": "gt0056",
+            "text": "Set CHA2DS2-VASc score 9"
+          },
+          "gt0013": {
+            "id": "gt0013",
+            "text": "Set Congestive heart failure override to diagnosis changed"
+          },
+          "gt0057": {
+            "id": "gt0057",
+            "text": "Total score",
+            "description": "*"
+          },
+          "gt0050": {
+            "id": "gt0050",
+            "text": "Set CHA2DS2-VASc score 3"
+          },
+          "gt0051": {
+            "id": "gt0051",
+            "text": "Set CHA2DS2-VASc score 4"
+          },
+          "gt0052": {
+            "id": "gt0052",
+            "text": "Set CHA2DS2-VASc score 5"
+          },
+          "gt0053": {
+            "id": "gt0053",
+            "text": "Set CHA2DS2-VASc score 6"
+          },
+          "gt0007": {
+            "id": "gt0007",
+            "text": "Set decision postponed 7 days"
+          },
+          "gt0008": {
+            "id": "gt0008",
+            "text": "Set decision postponed 30 days"
+          },
+          "gt0009": {
+            "id": "gt0009",
+            "text": "Set decision postponed 365 days"
+          },
+          "gt0047": {
+            "id": "gt0047",
+            "text": "Set CHA2DS2-VASc score 0"
+          },
+          "gt0048": {
+            "id": "gt0048",
+            "text": "Set CHA2DS2-VASc score 1"
+          },
+          "gt0049": {
+            "id": "gt0049",
+            "text": "Set CHA2DS2-VASc score 2"
+          },
+          "gt0043": {
+            "id": "gt0043",
+            "text": "Vascular disease diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0044": {
+            "id": "gt0044",
+            "text": "Vascular disease override date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0001": {
+            "id": "gt0001",
+            "text": "Stroke prevention dashboard utility",
+            "description": "Utility guidelines for assisting with clinical decision support indicators for stroke prevention that cannot be generated from the main stroke prevention guidelines."
+          },
+          "gt0045": {
+            "id": "gt0045",
+            "text": "Set unit unknown"
+          },
+          "gt0046": {
+            "id": "gt0046",
+            "text": "General diagnosis override",
+            "description": "*"
+          },
+          "gt0040": {
+            "id": "gt0040",
+            "text": "Congestive heart failure date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0041": {
+            "id": "gt0041",
+            "text": "Stroke/TIA/Thromboembolism diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0042": {
+            "id": "gt0042",
+            "text": "Stroke/TIA/Thromboembolism date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0036": {
+            "id": "gt0036",
+            "text": "Diabetes date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0037": {
+            "id": "gt0037",
+            "text": "Hypertension diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0038": {
+            "id": "gt0038",
+            "text": "Hypertension date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0039": {
+            "id": "gt0039",
+            "text": "Congestive heart failure diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0032": {
+            "id": "gt0032",
+            "text": "Date (time) of diagnosis review",
+            "description": "*"
+          },
+          "gt0076": {
+            "id": "gt0076",
+            "text": "CDS group"
+          },
+          "gt0033": {
+            "id": "gt0033",
+            "text": "Atrial fibrillation diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0077": {
+            "id": "gt0077",
+            "text": "Control group"
+          },
+          "gt0034": {
+            "id": "gt0034",
+            "text": "Atrial fibrillation date of initial onset",
+            "description": "The date that the problem began causing symptoms or signs"
+          },
+          "gt0078": {
+            "id": "gt0078",
+            "text": "Set study group to CDS group"
+          },
+          "gt0035": {
+            "id": "gt0035",
+            "text": "Diabetes diagnosis code",
+            "description": "The index diagnosis"
+          },
+          "gt0079": {
+            "id": "gt0079",
+            "text": "Set study group to control group"
+          },
+          "gt0072": {
+            "id": "gt0072",
+            "text": "Set decision postponed 1 day"
+          },
+          "gt0073": {
+            "id": "gt0073",
+            "text": "Study population",
+            "description": "*"
+          },
+          "gt0030": {
+            "id": "gt0030",
+            "text": "Stroke/TIA/Thromboembolism review",
+            "description": "*"
+          },
+          "gt0031": {
+            "id": "gt0031",
+            "text": "Vascular disease review",
+            "description": "*"
+          },
+          "gt0075": {
+            "id": "gt0075",
+            "text": "Responsible primary care unit",
+            "description": "*"
+          },
+          "gt0070": {
+            "id": "gt0070",
+            "text": "Reason for deviation",
+            "description": "*"
+          },
+          "gt0071": {
+            "id": "gt0071",
+            "text": "Reason for delayed decision",
+            "description": "*"
+          }
+        }
+      }
+    },
+    "term_bindings": {
+      "RO_UNIT": {
+        "id": "RO_UNIT",
+        "bindings": {
+          "gt0076": {
+            "id": "gt0076",
+            "codes": [
+              "RO_UNIT::2133",
+              "RO_UNIT::2143",
+              "RO_UNIT::2139",
+              "RO_UNIT::1435",
+              "RO_UNIT::1507",
+              "RO_UNIT::1511",
+              "RO_UNIT::1441",
+              "RO_UNIT::59200",
+              "RO_UNIT::1437",
+              "RO_UNIT::34142",
+              "RO_UNIT::1419",
+              "RO_UNIT::1427",
+              "RO_UNIT::1415",
+              "RO_UNIT::1478",
+              "RO_UNIT::1495",
+              "RO_UNIT::1445",
+              "RO_UNIT::1421",
+              "RO_UNIT::1491",
+              "RO_UNIT::1517",
+              "RO_UNIT::1487",
+              "RO_UNIT::1519",
+              "RO_UNIT::1429"
+            ],
+            "uri": ""
+          },
+          "gt0077": {
+            "id": "gt0077",
+            "codes": [
+              "RO_UNIT::2183",
+              "RO_UNIT::1505",
+              "RO_UNIT::1503",
+              "RO_UNIT::84149",
+              "RO_UNIT::2187",
+              "RO_UNIT::103304",
+              "RO_UNIT::1484",
+              "RO_UNIT::1482",
+              "RO_UNIT::1443",
+              "RO_UNIT::1513",
+              "RO_UNIT::1424",
+              "RO_UNIT::1433",
+              "RO_UNIT::1480",
+              "RO_UNIT::1493",
+              "RO_UNIT::49564",
+              "RO_UNIT::1489",
+              "RO_UNIT::1439",
+              "RO_UNIT::1417",
+              "RO_UNIT::1509",
+              "RO_UNIT::1431",
+              "RO_UNIT::1515"
+            ],
+            "uri": ""
+          }
+        }
+      },
+      "ICD10": {
+        "id": "ICD10",
+        "bindings": {
+          "gt0043": {
+            "id": "gt0043",
+            "codes": [
+              "ICD10::I252",
+              "ICD10::I73",
+              "ICD10::I72",
+              "ICD10::I21",
+              "ICD10::I71",
+              "ICD10::I70"
+            ],
+            "uri": ""
+          },
+          "gt0033": {
+            "id": "gt0033",
+            "codes": [
+              "ICD10::I48"
+            ],
+            "uri": ""
+          },
+          "gt0035": {
+            "id": "gt0035",
+            "codes": [
+              "ICD10::E11",
+              "ICD10::E10",
+              "ICD10::E13",
+              "ICD10::E12",
+              "ICD10::E14"
+            ],
+            "uri": ""
+          },
+          "gt0041": {
+            "id": "gt0041",
+            "codes": [
+              "ICD10::I74",
+              "ICD10::G45",
+              "ICD10::I64",
+              "ICD10::I63"
+            ],
+            "uri": ""
+          },
+          "gt0037": {
+            "id": "gt0037",
+            "codes": [
+              "ICD10::I12",
+              "ICD10::I13",
+              "ICD10::I10",
+              "ICD10::I11",
+              "ICD10::I15"
+            ],
+            "uri": ""
+          },
+          "gt0039": {
+            "id": "gt0039",
+            "codes": [
+              "ICD10::I50"
+            ],
+            "uri": ""
+          }
+        }
+      },
+      "ICD10prim": {
+        "id": "ICD10prim",
+        "bindings": {
+          "gt0043": {
+            "id": "gt0043",
+            "codes": [
+              "ICD10prim::I25-P",
+              "ICD10prim::I709P",
+              "ICD10prim::I71-",
+              "ICD10prim::I730",
+              "ICD10prim::I72-",
+              "ICD10prim::I739P",
+              "ICD10prim::I21-P"
+            ],
+            "uri": ""
+          },
+          "gt0033": {
+            "id": "gt0033",
+            "codes": [
+              "ICD10prim::I48-"
+            ],
+            "uri": ""
+          },
+          "gt0035": {
+            "id": "gt0035",
+            "codes": [
+              "ICD10prim::E118P",
+              "ICD10prim::E108P",
+              "ICD10prim::E14-P",
+              "ICD10prim::E109",
+              "ICD10prim::E119"
+            ],
+            "uri": ""
+          },
+          "gt0041": {
+            "id": "gt0041",
+            "codes": [
+              "ICD10prim::I63-",
+              "ICD10prim::G45-P",
+              "ICD10prim::I64-",
+              "ICD10prim::I74-"
+            ],
+            "uri": ""
+          },
+          "gt0037": {
+            "id": "gt0037",
+            "codes": [
+              "ICD10prim::I13-P",
+              "ICD10prim::I10-",
+              "ICD10prim::I15-"
+            ],
+            "uri": ""
+          },
+          "gt0039": {
+            "id": "gt0039",
+            "codes": [
+              "ICD10prim::I50-"
+            ],
+            "uri": ""
+          }
+        }
+      }
+    }
+  }
+}

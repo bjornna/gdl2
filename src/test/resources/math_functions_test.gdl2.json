@@ -1,0 +1,242 @@
+{
+  "gdl_version": "0.1",
+  "id": "math_functions_test",
+  "concept": "gt0001",
+  "language": {
+    "original_language": "ISO_639-1::en"
+  },
+  "description": {
+    "details": {
+      "en": {
+        "id": "en"
+      }
+    }
+  },
+  "definition": {
+    "data_bindings": {
+      "gt0002": {
+        "id": "gt0002",
+        "model_id": "openEHR-EHR-EVALUATION.nine_math_functions.v1",
+        "elements": {
+          "gt0010": {
+            "id": "gt0010",
+            "path": "/data[at0000]/items[at0008]"
+          },
+          "gt0011": {
+            "id": "gt0011",
+            "path": "/data[at0000]/items[at0009]"
+          },
+          "gt0007": {
+            "id": "gt0007",
+            "path": "/data[at0000]/items[at0005]"
+          },
+          "gt0008": {
+            "id": "gt0008",
+            "path": "/data[at0000]/items[at0006]"
+          },
+          "gt0009": {
+            "id": "gt0009",
+            "path": "/data[at0000]/items[at0007]"
+          },
+          "gt0003": {
+            "id": "gt0003",
+            "path": "/data[at0000]/items[at0001]"
+          },
+          "gt0004": {
+            "id": "gt0004",
+            "path": "/data[at0000]/items[at0002]"
+          },
+          "gt0005": {
+            "id": "gt0005",
+            "path": "/data[at0000]/items[at0003]"
+          },
+          "gt0006": {
+            "id": "gt0006",
+            "path": "/data[at0000]/items[at0004]"
+          }
+        }
+      }
+    },
+    "rules": {
+      "gt0012": {
+        "id": "gt0012",
+        "when": [],
+        "then": [
+          "$gt0003.units='m'",
+          "$gt0003.magnitude=(abs((-5.3)))"
+        ],
+        "priority": 9
+      },
+      "gt0013": {
+        "id": "gt0013",
+        "when": [],
+        "then": [
+          "$gt0004.units='m'",
+          "$gt0004.magnitude=(ceil(1.2))"
+        ],
+        "priority": 8
+      },
+      "gt0020": {
+        "id": "gt0020",
+        "when": [],
+        "then": [
+          "$gt0011.units='m'",
+          "$gt0011.magnitude=(sqrt(16))"
+        ],
+        "priority": 1
+      },
+      "gt0018": {
+        "id": "gt0018",
+        "when": [],
+        "then": [
+          "$gt0009.units='m'",
+          "$gt0009.magnitude=(log1p(10))",
+          "$gt0009.precision=2"
+        ],
+        "priority": 3
+      },
+      "gt0019": {
+        "id": "gt0019",
+        "when": [],
+        "then": [
+          "$gt0010.units='m'",
+          "$gt0010.magnitude=(round(7.6))"
+        ],
+        "priority": 2
+      },
+      "gt0014": {
+        "id": "gt0014",
+        "when": [],
+        "then": [
+          "$gt0005.units='m'",
+          "$gt0005.precision=2",
+          "$gt0005.magnitude=(exp(3))"
+        ],
+        "priority": 7
+      },
+      "gt0015": {
+        "id": "gt0015",
+        "when": [],
+        "then": [
+          "$gt0006.units='m'",
+          "$gt0006.magnitude=(floor(1.35))"
+        ],
+        "priority": 6
+      },
+      "gt0016": {
+        "id": "gt0016",
+        "when": [],
+        "then": [
+          "$gt0007.units='m'",
+          "$gt0007.precision=2",
+          "$gt0007.magnitude=(log(100))"
+        ],
+        "priority": 5
+      },
+      "gt0017": {
+        "id": "gt0017",
+        "when": [],
+        "then": [
+          "$gt0008.units='m'",
+          "$gt0008.magnitude=(log10(1000))",
+          "$gt0008.precision=2"
+        ],
+        "priority": 4
+      }
+    }
+  },
+  "ontology": {
+    "term_definitions": {
+      "en": {
+        "id": "en",
+        "terms": {
+          "gt0007": {
+            "id": "gt0007",
+            "text": "log() result",
+            "description": "*"
+          },
+          "gt0018": {
+            "id": "gt0018",
+            "text": "test log1p()"
+          },
+          "gt0008": {
+            "id": "gt0008",
+            "text": "log10() result",
+            "description": "*"
+          },
+          "gt0019": {
+            "id": "gt0019",
+            "text": "test round()"
+          },
+          "gt0009": {
+            "id": "gt0009",
+            "text": "log1p() result",
+            "description": "*"
+          },
+          "gt0003": {
+            "id": "gt0003",
+            "text": "abs() result",
+            "description": "*"
+          },
+          "gt0014": {
+            "id": "gt0014",
+            "text": "test exp()"
+          },
+          "gt0004": {
+            "id": "gt0004",
+            "text": "ceil() result",
+            "description": "*"
+          },
+          "gt0015": {
+            "id": "gt0015",
+            "text": "test floor()"
+          },
+          "gt0005": {
+            "id": "gt0005",
+            "text": "exp() result",
+            "description": "*"
+          },
+          "gt0016": {
+            "id": "gt0016",
+            "text": "test log()"
+          },
+          "gt0006": {
+            "id": "gt0006",
+            "text": "floor() result",
+            "description": "*"
+          },
+          "gt0017": {
+            "id": "gt0017",
+            "text": "test log10()"
+          },
+          "gt0010": {
+            "id": "gt0010",
+            "text": "round() result",
+            "description": "*"
+          },
+          "gt0011": {
+            "id": "gt0011",
+            "text": "sqrt() result",
+            "description": "*"
+          },
+          "gt0001": {
+            "id": "gt0001",
+            "text": "math_functions_test"
+          },
+          "gt0012": {
+            "id": "gt0012",
+            "text": "test abs()"
+          },
+          "gt0013": {
+            "id": "gt0013",
+            "text": "test ceil()"
+          },
+          "gt0020": {
+            "id": "gt0020",
+            "text": "test sqrt()"
+          }
+        }
+      }
+    }
+  }
+}

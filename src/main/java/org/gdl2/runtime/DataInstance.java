@@ -1,0 +1,148 @@
+package org.gdl2.runtime;
+
+import org.gdl2.datatypes.*;
+
+import java.util.*;
+
+/**
+ * A simple data structure that matches the ArchetypeBinding in the instance space both as input
+ * and output of GDL guideline executions.
+ */
+public class DataInstance {
+    private String modelId;
+    private Map<String, DataValue> values; // values indexed by path
+
+    private DataInstance() {
+        this.values = new HashMap<>();
+    }
+
+    DataInstance(String archetypeId) {
+        this();
+        this.modelId = archetypeId;
+    }
+
+    public static class Builder {
+        private DataInstance dataInstance = new DataInstance();
+
+        public Builder archetypeId(String archetypeId) {
+            assertNotNull(archetypeId, "Null modelId");
+            dataInstance.modelId = archetypeId;
+            return this;
+        }
+
+        /**
+         * Add keyed value of dataInstance.
+         *
+         * @param key       not null
+         * @param dataValue ignored if null value
+         */
+        public Builder addValue(String key, DataValue dataValue) {
+            assertNotNull(key, "Null key");
+            if (dataValue != null) {
+                dataInstance.values.put(key, dataValue);
+            }
+            return this;
+        }
+
+        public DataInstance build() {
+            assertNotNull(dataInstance.modelId, "modelId");
+            return dataInstance;
+        }
+    }
+
+    public DataValue get(String key) {
+        assertNotNull(key, "Null key");
+        return this.values.get(key);
+    }
+
+    public Map<String, DataValue> values() {
+        return Collections.unmodifiableMap(this.values);
+    }
+
+    public boolean isEmpty() {
+        return this.values.isEmpty();
+    }
+
+    public void merge(DataInstance dataInstance) {
+        if (dataInstance.modelId.equals(this.modelId)) {
+            this.values.putAll(dataInstance.values);
+        }
+    }
+
+    public int size() {
+        return this.values.size();
+    }
+
+    public Map<String, List<DataValue>> valueListMap() {
+        Map<String, List<DataValue>> result = new HashMap<>();
+        for (Map.Entry<String, DataValue> entry : this.values.entrySet()) {
+            List<DataValue> list = new ArrayList<>();
+            list.add(entry.getValue());
+            result.put(entry.getKey(), list);
+        }
+        return result;
+    }
+
+    public DvCount getDvCount(String key) {
+        check(key);
+        return (DvCount) this.values.get(key);
+    }
+
+    public DvBoolean getDvBoolean(String key) {
+        check(key);
+        return (DvBoolean) this.values.get(key);
+    }
+
+    public DvCodedText getDvCodedText(String key) {
+        check(key);
+        return (DvCodedText) this.values.get(key);
+    }
+
+    public DvQuantity getDvQuantity(String key) {
+        check(key);
+        return (DvQuantity) this.values.get(key);
+    }
+
+    public DvOrdinal getDvOrdinal(String key) {
+        check(key);
+        return (DvOrdinal) this.values.get(key);
+    }
+
+    public DvDateTime getDvDateTime(String key) {
+        check(key);
+        return (DvDateTime) this.values.get(key);
+    }
+
+    /**
+     * Set keyed value of dataInstance.
+     *
+     * @param key       not null
+     * @param dataValue null value if ignored
+     */
+    public void setValue(String key, DataValue dataValue) {
+        assertNotNull(key, "Null key");
+        assertNotNull(dataValue, "Null dataValue");
+        this.values.put(key, dataValue);
+    }
+
+    private void check(String key) {
+        assertNotNull(key, "Null key");
+        assertTrue(this.values.containsKey(key), "Missing value for key: " + key);
+    }
+
+    public String modelId() {
+        return this.modelId;
+    }
+
+    private static void assertNotNull(Object object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    private static void assertTrue(boolean expression, String message) {
+        if (!expression) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+}

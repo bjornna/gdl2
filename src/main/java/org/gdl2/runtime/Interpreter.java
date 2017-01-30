@@ -514,6 +514,9 @@ public class Interpreter {
                 return ((DvBoolean) leftValue).getValue() == rightValueBoolean;
             } else if (leftValue instanceof DvQuantity) {
                 leftValue = evaluateQuantityValue((DvQuantity) leftValue);
+            } else if(rightValue instanceof Double) {
+                Double leftValueDouble = Double.valueOf(leftValue.toString());
+                return leftValueDouble.equals(rightValue);
             }
             return leftValue.equals(rightValue);
         } else {

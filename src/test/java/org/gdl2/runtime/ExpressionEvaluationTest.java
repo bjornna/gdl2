@@ -61,6 +61,15 @@ public class ExpressionEvaluationTest extends TestCommon {
     }
 
     @Test
+    public void can_evaluate_equality_of_dv_count_with_addition() {
+        expressionItem = parseExpression("$gt0015.magnitude==(7-$gt0016.magnitude)");
+        inputMap.put("gt0015", asList(new DvCount(4)));
+        inputMap.put("gt0016", asList(new DvCount(3)));
+        value = interpreter.evaluateExpressionItem(expressionItem, inputMap);
+        assertThat(value, is(true));
+    }
+
+    @Test
     public void can_evaluate_variable_of_last_value_in_the_list() {
         Variable variable = new Variable("gt0001");
         ArrayList<DataValue> dataValues = new ArrayList<>();

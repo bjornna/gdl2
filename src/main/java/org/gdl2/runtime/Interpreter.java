@@ -202,7 +202,7 @@ public class Interpreter {
     private Map<String, DataValue> evaluateRuleWithSingleValueForEachInputVariable(Rule rule, Map<String, List<DataValue>> input,
                                                                                    GuideOntology guideOntology, Set<String> firedRules) {
         Map<String, DataValue> result = new HashMap<>();
-        boolean allWhenStatementsAreTrue = rule.getWhen().stream()
+        boolean allWhenStatementsAreTrue = rule.getWhen() == null || rule.getWhen().stream()
                 .allMatch(whenStatement -> evaluateBooleanExpression(whenStatement, input, guideOntology, firedRules));
         if (!allWhenStatementsAreTrue) {
             return result;
@@ -514,7 +514,7 @@ public class Interpreter {
                 return ((DvBoolean) leftValue).getValue() == rightValueBoolean;
             } else if (leftValue instanceof DvQuantity) {
                 leftValue = evaluateQuantityValue((DvQuantity) leftValue);
-            } else if(rightValue instanceof Double) {
+            } else if (rightValue instanceof Double) {
                 Double leftValueDouble = Double.valueOf(leftValue.toString());
                 return leftValueDouble.equals(rightValue);
             }

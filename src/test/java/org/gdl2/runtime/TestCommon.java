@@ -33,6 +33,7 @@ public class TestCommon {
     static final String MEDICATION_LAST_ADMINISTRATION_DATE = "/activities[at0001]/description[openEHR-EHR-ITEM_TREE.medication.v1]/items[at0018]/items[at0032]";
 
     static final String BSA_CALCULATION = "BSA_Calculation_test.v1.gdl2";
+    static final String BSA_CALCULATION_WITHOUT_WHEN = "BSA_Calculation_without_when_test.v1.gdl2";
 
     DataInstance toWeight(String value, String eventTime) {
         return new DataInstance.Builder().archetypeId(WEIGHT_ARCHETYPE)

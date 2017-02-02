@@ -1,0 +1,192 @@
+{
+  "gdl_version": "2.0",
+  "id": "BSA_Calculation.v1",
+  "concept": "gt0015",
+  "language": {
+    "original_language": "ISO_639-1::en"
+  },
+  "description": {
+    "original_author": {
+      "date": "2013-03-11",
+      "name": "Author",
+      "organisation": "CDS",
+      "email": "author@cambio.se"
+    },
+    "other_contributors": [
+      "Konstantinos Kalliamvakos",
+      "Iago Corbal"
+    ],
+    "lifecycle_state": "Author draft",
+    "details": {
+      "sv": {
+        "id": "sv",
+        "copyright": "Cambio Healthcare Systems"
+      },
+      "si": {
+        "id": "si"
+      },
+      "el": {
+        "id": "el",
+        "purpose": "Υπολογισμός της επιφάνειας σώματος σύμφωνα με την εξίσωση Mosteller.",
+        "keywords": [
+          "body surface area",
+          "BSA",
+          "Mosteller formula"
+        ],
+        "use": "Χρησιμοποιείται για τον υπολογισμό της επιφάνειας σώματος σύμφωνα με την εξίσωση Mosteller: ( [ύψος(cm) x βάρος(kg) ]/3600 )½ ",
+        "misuse": "Δεν χρησιμοποιείτε για τον υπολογισμό της επιφάνειας σώματος σύμφωνα με άλλους τύπους εξισώσεων.",
+        "copyright": "Cambio Healthcare Systems"
+      },
+      "en": {
+        "id": "en",
+        "purpose": "To calculate the body surface area based on the Mosteller formula.",
+        "keywords": [
+          "body surface area",
+          "BSA",
+          "Mosteller formula"
+        ],
+        "use": "Use for calculating the BSA based on the Mosteller formula ( Height(cm) x Weight(kg) / 3600 )½",
+        "misuse": "Do not use for calculating  BSA based on other formulas.",
+        "copyright": "cds"
+      },
+      "da": {
+        "id": "da"
+      },
+      "es": {
+        "id": "es",
+        "keywords": [
+          "body surface area",
+          "BSA",
+          "Mosteller formula"
+        ],
+        "copyright": "Cambio Healthcare Systems"
+      }
+    },
+    "other_details": {
+      "references": "1. Mosteller R. Simplified Calculation of Body-Surface Area. N Engl J Med. 1987;317(17):1098. "
+    }
+  },
+  "definition": {
+    "data_bindings": {
+      "gt0019": {
+        "id": "gt0019",
+        "model_id": "openEHR-EHR-OBSERVATION.body_surface_area.v1",
+        "elements": {
+          "gt0013": {
+            "id": "gt0013",
+            "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+          },
+          "gt0014": {
+            "id": "gt0014",
+            "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0005]"
+          }
+        }
+      },
+      "gt0016": {
+        "id": "gt0016",
+        "model_id": "openEHR-EHR-OBSERVATION.body_weight.v1",
+        "elements": {
+          "gt0005": {
+            "id": "gt0005",
+            "path": "/data[at0002]/events[at0003]/data[at0001]/items[at0004]"
+          }
+        },
+        "predicates": [
+          "max(/data/events/time)"
+        ]
+      },
+      "gt0017": {
+        "id": "gt0017",
+        "model_id": "openEHR-EHR-OBSERVATION.height.v1",
+        "elements": {
+          "gt0006": {
+            "id": "gt0006",
+            "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+          }
+        },
+        "predicates": [
+          "max(/data/events/time)"
+        ]
+      }
+    },
+    "rules": {
+      "gt0009": {
+        "id": "gt0009",
+        "then": [
+          "$gt0013.magnitude=((($gt0005.magnitude*$gt0006.magnitude)/3600)^0.5)",
+          "$gt0013.precision=2",
+          "$gt0013.units='m2'"
+        ],
+        "priority": 3
+      },
+      "gt0016": {
+        "id": "gt0016",
+        "when": [
+          "fired($gt0009)"
+        ],
+        "then": [
+          "$gt0014=true"
+        ],
+        "priority": 2
+      },
+      "gt0017": {
+        "id": "gt0017",
+        "when": [
+          "!fired($gt0009)"
+        ],
+        "then": [
+          "$gt0014=false"
+        ],
+        "priority": 1
+      }
+    }
+  },
+  "ontology": {
+    "term_definitions": {
+      "en": {
+        "id": "en",
+        "terms": {
+          "gt0011": {
+            "id": "gt0011",
+            "text": "Formula name",
+            "description": "The name of the formula employed to calculate Body Surface Area."
+          },
+          "gt0013": {
+            "id": "gt0013",
+            "text": "Body surface area",
+            "description": "The calculated body surface area."
+          },
+          "gt0009": {
+            "id": "gt0009",
+            "text": "BSA calculation (Mosteller)"
+          },
+          "gt0015": {
+            "id": "gt0015",
+            "text": "BSA Calculation",
+            "description": "Body surface area is the measured or calculated surface area of a human body, expressed in square meters."
+          },
+          "gt0005": {
+            "id": "gt0005",
+            "text": "Weight",
+            "description": "The weight of the individual."
+          },
+          "gt0016": {
+            "id": "gt0016",
+            "text": "test rule fired",
+            "description": "."
+          },
+          "gt0006": {
+            "id": "gt0006",
+            "text": "Height",
+            "description": "The length of the body from crown of head to sole of foot."
+          },
+          "gt0017": {
+            "id": "gt0017",
+            "text": "test rule not fired",
+            "description": "."
+          }
+        }
+      }
+    }
+  }
+}

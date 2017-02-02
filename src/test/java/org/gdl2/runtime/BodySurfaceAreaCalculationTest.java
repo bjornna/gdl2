@@ -50,4 +50,19 @@ public class BodySurfaceAreaCalculationTest extends TestCommon {
         assertThat(dvQuantity.getPrecision(), is(2));
         assertThat(dvQuantity.getUnits(), is("m2"));
     }
+
+    @Test
+    public void can_run_body_surface_calculation_rule_without_when_statements() throws Exception {
+        Guideline guideline = loadGuideline(BSA_CALCULATION_WITHOUT_WHEN);
+        ArrayList<DataInstance> dataInstances = new ArrayList<>();
+        dataInstances.add(toWeight("72.0,kg", "2012-01-01T00:00:00"));
+        dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
+
+        List<DataInstance> result = interpreter.executeSingleGuideline(guideline, dataInstances);
+        DataInstance dataInstance = result.get(0);
+        DvQuantity dvQuantity = dataInstance.getDvQuantity("/data[at0001]/events[at0002]/data[at0003]/items[at0004]");
+        assertThat(dvQuantity.getMagnitude(), closeTo(1.90, 0.1));
+        assertThat(dvQuantity.getPrecision(), is(2));
+        assertThat(dvQuantity.getUnits(), is("m2"));
+    }
 }

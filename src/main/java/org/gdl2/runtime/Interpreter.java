@@ -126,7 +126,7 @@ public class Interpreter {
         List<DataInstance> dataInstances = new ArrayList<>();
         Set<String> assignableCodes = getCodesForAssignableVariables(guideDefinition);
         for (DataBinding archetypeBinding : guideDefinition.getDataBindings().values()) {
-            DataInstance dataInstance = new DataInstance.Builder().archetypeId(archetypeBinding.getModelId()).build();
+            DataInstance dataInstance = new DataInstance.Builder().modelId(archetypeBinding.getModelId()).build();
             for (Map.Entry<String, Element> elementBindingEntry : archetypeBinding.getElements().entrySet()) {
                 String elementId = elementBindingEntry.getValue().getId();
                 String elementPath = elementBindingEntry.getValue().getPath();

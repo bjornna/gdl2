@@ -16,17 +16,17 @@ public class DataInstance {
         this.values = new HashMap<>();
     }
 
-    DataInstance(String archetypeId) {
+    DataInstance(String modelId) {
         this();
-        this.modelId = archetypeId;
+        this.modelId = modelId;
     }
 
     public static class Builder {
         private DataInstance dataInstance = new DataInstance();
 
-        public Builder archetypeId(String archetypeId) {
-            assertNotNull(archetypeId, "Null modelId");
-            dataInstance.modelId = archetypeId;
+        public Builder modelId(String modelId) {
+            assertNotNull(modelId, "Null modelId");
+            dataInstance.modelId = modelId;
             return this;
         }
 

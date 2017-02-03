@@ -35,22 +35,22 @@ public class PredicateTest extends TestCommon {
                 new Variable(null, "name", path, null), OperatorKind.MAX);
         DataInstance[] dataInstances = new DataInstance[4];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(1))
                 .addValue(("/data[at0001]/items[at0004]"), DvDateTime.valueOf("2010-01-01T00:00:00"))
                 .build();
         dataInstances[1] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(2))
                 .addValue(("/data[at0001]/items[at0004]"), DvDateTime.valueOf("2012-01-01T00:00:00"))
                 .build();
         dataInstances[2] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(8))
                 .addValue(("/data[at0001]/items[at0004]"), DvDateTime.valueOf("2015-10-01T00:00:00"))
                 .build();
         dataInstances[3] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(5))
                 .addValue(("/data[at0001]/items[at0004]"), DvDateTime.valueOf("2013-01-01T00:00:00"))
                 .build();
@@ -68,17 +68,17 @@ public class PredicateTest extends TestCommon {
                 new Variable(null, "name", path, null), OperatorKind.MIN);
         DataInstance[] dataInstances = new DataInstance[3];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(1))
                 .addValue(path, DvDateTime.valueOf("2010-01-01T00:00:00"))
                 .build();
         dataInstances[1] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(2))
                 .addValue(path, DvDateTime.valueOf("2012-01-01T00:00:00"))
                 .build();
         dataInstances[2] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(8))
                 .addValue(path, DvDateTime.valueOf("2015-10-01T00:00:00"))
                 .build();
@@ -97,26 +97,26 @@ public class PredicateTest extends TestCommon {
                 new CodedTextConstant("Hypertension", new CodePhrase("local", "gt0101")), OperatorKind.IS_A);
         DataInstance[] dataInstances = new DataInstance[5];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(1))
                 .addValue(path, new DvCodedText("Hypertension", "ICD10", "I10"))
                 .build();
         dataInstances[1] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(3))
                 .addValue(path, new DvCodedText("Diabetes Type-1", "ICD10", "E10"))
                 .build();
         dataInstances[2] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(5))
                 .addValue(path, new DvCodedText("Hypertension", "ICD10", "I11"))
                 .build();
         dataInstances[3] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(7))
                 .build();
         dataInstances[4] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue("gt0011", new DvCount(9))
                 .addValue(path, new DvCodedText("Hypertension", "ICD10", "I11"))
                 .build();
@@ -142,31 +142,31 @@ public class PredicateTest extends TestCommon {
 
         DataInstance[] dataInstances = new DataInstance[5];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue(countCode, new DvCount(1))
                 .addValue(codePath, new DvCodedText("Hypertension", "ICD10", "I10"))
                 .addValue(timestampPath, DvDateTime.valueOf("2012-01-01T00:00:00"))
                 .build();
         dataInstances[1] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue(countCode, new DvCount(3))
                 .addValue(codePath, new DvCodedText("Other aneurysm", "ICD10", "I72"))        // right code
                 .addValue(timestampPath, DvDateTime.valueOf("2011-01-01T00:00:00"))
                 .build();
         dataInstances[2] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue(countCode, new DvCount(5))
                 .addValue(codePath, new DvCodedText("Hypertension", "ICD10", "I11"))
                 .addValue(timestampPath, DvDateTime.valueOf("2010-01-01T00:00:00"))
                 .build();
         dataInstances[3] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue(countCode, new DvCount(7))
                 .addValue(codePath, new DvCodedText("Hypertension", "ICD10", "I11"))             // wrong code
                 .addValue(timestampPath, DvDateTime.valueOf("2014-01-01T00:00:00"))             // max date
                 .build();
         dataInstances[4] = new DataInstance.Builder()
-                .archetypeId(archetypeId)
+                .modelId(archetypeId)
                 .addValue(countCode, new DvCount(9))
                 .addValue(codePath, new DvCodedText("myocardial infarction", "ICD10", "I21"))    // right code
                 .addValue(timestampPath, DvDateTime.valueOf("2013-01-01T00:00:00"))
@@ -182,7 +182,7 @@ public class PredicateTest extends TestCommon {
     public void can_run_empty_list_without_right_input_on_max_predicate() throws Exception {
         DataInstance[] dataInstances = new DataInstance[1];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId("archetype")
+                .modelId("archetype")
                 .addValue("count", new DvCount(1))
                 .build();
         String path = "/data[at0001]/items[at0004]";
@@ -197,7 +197,7 @@ public class PredicateTest extends TestCommon {
     public void can_run_empty_list_without_right_input_on_min_predicate() throws Exception {
         DataInstance[] dataInstances = new DataInstance[1];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId("archetype")
+                .modelId("archetype")
                 .addValue("count", new DvCount(1))
                 .build();
         String path = "/data[at0001]/items[at0004]";
@@ -213,7 +213,7 @@ public class PredicateTest extends TestCommon {
         // /data/events/time/value/value>=($currentDateTime.value-12,mo)
         DataInstance[] dataInstances = new DataInstance[1];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId("weight")
+                .modelId("weight")
                 .addValue("/data/events/time", DvDateTime.valueOf("2014-02-15T18:18:00"))
                 .build();
         Map<String, DataValue> parameters = new HashMap<>();
@@ -235,7 +235,7 @@ public class PredicateTest extends TestCommon {
         // /data[at0001]/items[at0003]/value/value>=($currentDateTime.value-12,mo)
         DataInstance[] dataInstances = new DataInstance[1];
         dataInstances[0] = new DataInstance.Builder()
-                .archetypeId("weight")
+                .modelId("weight")
                 .addValue("/data[at0001]/items[at0003]", DvDateTime.valueOf("2014-02-15T18:18:00"))
                 .build();
         Map<String, DataValue> parameters = new HashMap<>();

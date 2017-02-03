@@ -36,14 +36,14 @@ public class TestCommon {
     static final String BSA_CALCULATION_WITHOUT_WHEN = "BSA_Calculation_without_when_test.v1.gdl2";
 
     DataInstance toWeight(String value, String eventTime) {
-        return new DataInstance.Builder().archetypeId(WEIGHT_ARCHETYPE)
+        return new DataInstance.Builder().modelId(WEIGHT_ARCHETYPE)
                 .addValue(WEIGHT_VALUE, DvQuantity.valueOf(value))
                 .addValue(WEIGHT_EVENT_TIME, DvDateTime.valueOf(eventTime))
                 .build();
     }
 
     DataInstance toHeight(String value, String eventTime) {
-        return new DataInstance.Builder().archetypeId(HEIGHT_ARCHETYPE)
+        return new DataInstance.Builder().modelId(HEIGHT_ARCHETYPE)
                 .addValue(HEIGHT_VALUE, DvQuantity.valueOf(value))
                 .addValue(HEIGHT_EVENT_TIME, DvDateTime.valueOf(eventTime))
                 .build();
@@ -55,7 +55,7 @@ public class TestCommon {
 
     DataInstance toMedication(String startDatetime, String endDatetime, String genericName) {
         return new DataInstance.Builder()
-                .archetypeId(MEDICATION_ARCHETYPE)
+                .modelId(MEDICATION_ARCHETYPE)
                 .addValue(MEDICATION_FIRST_ADMINISTRATION_DATE, toDvDateTime(startDatetime))
                 .addValue(MEDICATION_LAST_ADMINISTRATION_DATE, toDvDateTime(endDatetime))
                 .addValue(MEDICATION_GENERIC_NAME, DvCodedText.valueOf(genericName))

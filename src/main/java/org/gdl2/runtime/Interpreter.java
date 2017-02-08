@@ -467,8 +467,7 @@ public class Interpreter {
         }
         Object leftValue = leftExpression == null ? null : evaluateExpressionItem(leftExpression, input, ontology, firedRules);
         Object rightValue = rightExpression == null ? null : evaluateExpressionItem(rightExpression, input, ontology, firedRules);
-        if (isTimePeriodOperator(operator)
-                && (leftValue instanceof Period || rightValue instanceof Period)) {
+        if (leftValue instanceof Period || rightValue instanceof Period) {
             return evaluateDateTimeExpression(operator, leftValue, rightValue);
         } else if (isArithmeticOperator(operator)) {
             return evaluateArithmeticExpression(operator, leftValue, rightValue, expressionItem);
@@ -485,22 +484,51 @@ public class Interpreter {
         }
     }
 
-    private boolean isTimePeriodOperator(OperatorKind operator) {
-        return operator == ADDITION || operator == SUBSTRATION;
+    private LocalDateTime systemCurrentDateTime() {
+        return ((DvDateTime) systemParameters.get(CURRENT_DATETIME)).getDateTime();
     }
 
     private Object evaluateDateTimeExpression(OperatorKind operator, Object leftValue, Object rightValue) {
-        Period period;
-        Long longValue;
-        if (rightValue instanceof Period) {
-            period = (Period) rightValue;
-            longValue = (Long) leftValue;
-        } else {
-            period = (Period) leftValue;
-            longValue = (Long) rightValue;
+        if (leftValue instanceof Period && rightValue instanceof Period) {
+            Period periodLeft = (Period) leftValue;
+            Period periodRight = (Period) rightValue;
+            LocalDateTime localDateTime = systemCurrentDateTime();
+            LocalDateTime localDateTimeLeft = localDateTime.plus(periodLeft);
+            LocalDateTime localDateTimeRight = localDateTime.plus(periodRight);
+            if (operator == GREATER_THAN) {
+                return localDateTimeLeft.isAfter(localDateTimeRight);
+            } else if (operator == GREATER_THAN_OR_EQUAL) {
+                return localDateTimeLeft.isAfter(localDateTimeRight) || localDateTimeLeft.equals(localDateTimeRight);
+            } else if (operator == LESS_THAN) {
+                return localDateTimeLeft.isBefore(localDateTimeRight);
+            } else if (operator == LESS_THAN_OR_EQUAL) {
+                return localDateTimeLeft.isBefore(localDateTimeRight) || localDateTimeLeft.equals(localDateTimeRight);
+            } else if (operator == EQUALITY) {
+                return localDateTimeLeft.equals(localDateTimeRight);
+            } else {
+                throw new UnsupportedOperationException("Unsupported combination of operator for two periods: " + operator);
+            }
+        } else if (operator == ADDITION || operator == SUBSTRATION) {
+            Period period;
+            Long longValue;
+            if (rightValue instanceof Period) {
+                period = (Period) rightValue;
+                longValue = (Long) leftValue;
+            } else {
+                period = (Period) leftValue;
+                longValue = (Long) rightValue;
+            }
+            LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(longValue), ZoneId.systemDefault());
+            return operator == ADDITION ? localDateTime.plus(period) : localDateTime.minus(period);
+        } else if(rightValue == null) {
+            if(operator == NOT) {
+                return true;
+            } else {
+                return false;
+            }
         }
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(longValue), ZoneId.systemDefault());
-        return operator == ADDITION ? localDateTime.plus(period) : localDateTime.minus(period);
+        throw new UnsupportedOperationException("Unsupported combination of left: "
+                + leftValue + ", right: " + rightValue + ", operator: " + operator);
     }
 
     private boolean evaluateEqualityExpression(Object leftValue, Object rightValue) {
@@ -634,6 +662,12 @@ public class Interpreter {
         }
         String attribute = variable.getAttribute();
         if (attribute == null) {
+            if (dataValue instanceof DvQuantity) {
+                DvQuantity dvQuantity = (DvQuantity) dataValue;
+                if (isTimePeriodUnits(dvQuantity.getUnits())) {
+                    return convertTimeQuantityToPeriodOrMilliSeconds(dvQuantity);
+                }
+            }
             return dataValue;
         }
         if (TypeBinding.VALUE.equals(attribute) && dataValue instanceof DvDateTime) {

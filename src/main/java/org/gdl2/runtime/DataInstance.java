@@ -98,6 +98,11 @@ public class DataInstance {
         return (DvCodedText) this.values.get(key);
     }
 
+    public DvText getDvText(String key) {
+        check(key);
+        return (DvText) this.values.get(key);
+    }
+
     public DvQuantity getDvQuantity(String key) {
         check(key);
         return (DvQuantity) this.values.get(key);

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gdl2</groupId>
     <artifactId>gdl2</artifactId>
-    <version>0.3.2</version>
+    <version>0.3.4</version>
     <name>GDL2</name>
     <description>Guideline Definition Language v2 reference java implementation</description>
     <build>

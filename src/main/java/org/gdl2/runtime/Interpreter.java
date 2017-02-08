@@ -272,12 +272,14 @@ public class Interpreter {
             } else {
                 throw new IllegalArgumentException("Unexpected value: " + value + ", in null_flavor assignmentExpression: " + assignmentExpression);
             }
+        } else if(TypeBinding.VALUE.equals(attribute) && value instanceof String) {
+            result.put(variable.getCode(), DvText.valueOf((String) value));
         } else if ("true".equalsIgnoreCase(value.toString()) || "false".equalsIgnoreCase(value.toString())) {
             result.put(variable.getCode(), DvBoolean.valueOf(value.toString()));
+        } else if (value instanceof DataValue) {
+            result.put(assignmentExpression.getVariable().getCode(), (DataValue) value);
         } else {
-            if (value instanceof DataValue) {
-                result.put(assignmentExpression.getVariable().getCode(), (DataValue) value);
-            }
+            throw new UnsupportedOperationException("failed to perform assignmentExpression: " + assignmentExpression);
         }
     }
 
@@ -520,8 +522,8 @@ public class Interpreter {
             }
             LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(longValue), ZoneId.systemDefault());
             return operator == ADDITION ? localDateTime.plus(period) : localDateTime.minus(period);
-        } else if(rightValue == null) {
-            if(operator == NOT) {
+        } else if (rightValue == null) {
+            if (operator == NOT) {
                 return true;
             } else {
                 return false;

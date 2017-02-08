@@ -165,7 +165,7 @@ public class AssignmentStatementTest extends TestCommon {
 
 
     @Test
-    public void can_assign_dv_datetime_with_current_datetime() {
+    public void can_assign_dv_datxetime_with_current_datetime() {
         // "$gt0124.value=$currentDateTime.value"
         String code = "gt0124";
         AssignmentExpression assignment = new AssignmentExpression(new Variable(code, "datetime", "path", "value"),
@@ -173,6 +173,15 @@ public class AssignmentStatementTest extends TestCommon {
         interpreter.performAssignmentStatements(assignment, inputMap, new HashMap<>(), resultMap);
         dataValue = resultMap.get(code);
         assertThat(dataValue, instanceOf(DvDateTime.class));
+    }
+
+    @Test
+    public void can_assign_dv_text_value_with_string() throws Exception {
+        AssignmentExpression assignment = parseAssignmentExpression("$gt0008.value='Radiotherapy'");
+        interpreter.performAssignmentStatements(assignment, inputMap, new HashMap<>(), resultMap);
+        dataValue = resultMap.get("gt0008");
+        assertThat(dataValue, instanceOf(DvText.class));
+        assertThat(((DvText) dataValue).getValue(), is("Radiotherapy"));
     }
 
     @Test

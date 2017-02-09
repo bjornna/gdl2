@@ -14,6 +14,7 @@ public class DataBindingSerializer implements JsonSerializer<DataBinding> {
         JsonObject object = new JsonObject();
         object.add("id", context.serialize(src.getId()));
         object.add("model_id", context.serialize(src.getModelId()));
+        object.add("type", context.serialize(src.getType()));
         object.add("elements", context.serialize(src.getElements()));
         if (src.getPredicates() != null) {
             object.add("predicates", context.serialize(src.getPredicates().stream()

@@ -44,7 +44,7 @@ public class BodySurfaceAreaCalculationTest extends TestCommon {
         dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
 
         List<DataInstance> result = interpreter.executeGuidelines(Collections.singletonList(guideline), dataInstances);
-        DataInstance dataInstance = result.get(2);
+        DataInstance dataInstance = result.get(0);
         DvQuantity dvQuantity = dataInstance.getDvQuantity("/data[at0001]/events[at0002]/data[at0003]/items[at0004]");
         assertThat(dvQuantity.getMagnitude(), closeTo(1.90, 0.1));
         assertThat(dvQuantity.getPrecision(), is(2));

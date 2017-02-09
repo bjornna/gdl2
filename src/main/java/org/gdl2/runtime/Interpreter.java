@@ -44,6 +44,7 @@ public class Interpreter {
         assertNotNull(inputDataInstances, "List<DataInstance> cannot be null.");
         Map<String, DataInstance> allResults = new HashMap<>();
         List<DataInstance> input = new ArrayList<>(inputDataInstances);
+        List<DataInstance> totalResult = new ArrayList<>();
         for (Guideline guide : guidelines) {
             List<DataInstance> resultPerExecution = executeSingleGuideline(guide, input);
             for (DataInstance dataInstance : resultPerExecution) {
@@ -56,8 +57,9 @@ public class Interpreter {
             }
             input = new ArrayList<>(inputDataInstances);
             input.addAll(allResults.values());
+            totalResult.addAll(resultPerExecution);
         }
-        return input;
+        return totalResult;
     }
 
     public List<DataInstance> executeSingleGuideline(Guideline guide, List<DataInstance> dataInstances) {
@@ -125,9 +127,12 @@ public class Interpreter {
     private List<DataInstance> collectDataInstancesFromValueMap(Map<String, DataValue> valueMap, GuideDefinition guideDefinition) {
         List<DataInstance> dataInstances = new ArrayList<>();
         Set<String> assignableCodes = getCodesForAssignableVariables(guideDefinition);
-        for (DataBinding archetypeBinding : guideDefinition.getDataBindings().values()) {
-            DataInstance dataInstance = new DataInstance.Builder().modelId(archetypeBinding.getModelId()).build();
-            for (Map.Entry<String, Element> elementBindingEntry : archetypeBinding.getElements().entrySet()) {
+        for (DataBinding dataBinding : guideDefinition.getDataBindings().values()) {
+            if(DataBinding.Type.INPUT.equals(dataBinding.getType())) {
+                continue;
+            }
+            DataInstance dataInstance = new DataInstance.Builder().modelId(dataBinding.getModelId()).build();
+            for (Map.Entry<String, Element> elementBindingEntry : dataBinding.getElements().entrySet()) {
                 String elementId = elementBindingEntry.getValue().getId();
                 String elementPath = elementBindingEntry.getValue().getPath();
                 for (Map.Entry<String, DataValue> entry : valueMap.entrySet()) {

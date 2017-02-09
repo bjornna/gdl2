@@ -50,6 +50,11 @@ public class DataInstance {
         }
     }
 
+    public boolean contains(String key) {
+        assertNotNull(key, "Null key");
+        return this.values.containsKey(key);
+    }
+
     public DataValue get(String key) {
         assertNotNull(key, "Null key");
         return this.values.get(key);

@@ -38,6 +38,12 @@ public class Interpreter {
         this.systemParameters.putAll(systemParameters);
     }
 
+    private static void assertNotNull(Object object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     // TODO sort guides according to dependency
     public List<DataInstance> executeGuidelines(List<Guideline> guidelines, List<DataInstance> inputDataInstances) {
         assertNotNull(guidelines, "List<Guideline> cannot be null.");
@@ -81,7 +87,6 @@ public class Interpreter {
         Map<String, List<DataValue>> inputValues = selectDataInstancesUsingPredicatesAndSortWithElementBindingCode(
                 dataInstances, guide);
         Map<String, DataValue> resultDefaultRuleExecution = new HashMap<>();
-        List<Rule> sortedRules = sortRulesByPriority(guide.getDefinition().getRules().values());
         Map<String, Class> typeMap = new HashMap<>();
         Set<String> firedRules = new HashSet<>();
         boolean allPreconditionsAreTrue = true;
@@ -98,6 +103,7 @@ public class Interpreter {
                 mergeValueMapIntoListValueMap(resultDefaultRuleExecution, inputValues);
             }
         }
+        List<Rule> sortedRules = sortRulesByPriority(guide.getDefinition().getRules().values());
 
         Map<String, List<DataValue>> inputAndResult = new HashMap<>(inputValues);
         for (Rule rule : sortedRules) {
@@ -128,7 +134,7 @@ public class Interpreter {
         List<DataInstance> dataInstances = new ArrayList<>();
         Set<String> assignableCodes = getCodesForAssignableVariables(guideDefinition);
         for (DataBinding dataBinding : guideDefinition.getDataBindings().values()) {
-            if(DataBinding.Type.INPUT.equals(dataBinding.getType())) {
+            if (DataBinding.Type.INPUT.equals(dataBinding.getType())) {
                 continue;
             }
             DataInstance dataInstance = new DataInstance.Builder().modelId(dataBinding.getModelId()).build();
@@ -277,7 +283,7 @@ public class Interpreter {
             } else {
                 throw new IllegalArgumentException("Unexpected value: " + value + ", in null_flavor assignmentExpression: " + assignmentExpression);
             }
-        } else if(TypeBinding.VALUE.equals(attribute) && value instanceof String) {
+        } else if (TypeBinding.VALUE.equals(attribute) && value instanceof String) {
             result.put(variable.getCode(), DvText.valueOf((String) value));
         } else if ("true".equalsIgnoreCase(value.toString()) || "false".equalsIgnoreCase(value.toString())) {
             result.put(variable.getCode(), DvBoolean.valueOf(value.toString()));
@@ -528,11 +534,7 @@ public class Interpreter {
             LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(longValue), ZoneId.systemDefault());
             return operator == ADDITION ? localDateTime.plus(period) : localDateTime.minus(period);
         } else if (rightValue == null) {
-            if (operator == NOT) {
-                return true;
-            } else {
-                return false;
-            }
+            return operator == NOT;
         }
         throw new UnsupportedOperationException("Unsupported combination of left: "
                 + leftValue + ", right: " + rightValue + ", operator: " + operator);
@@ -689,7 +691,6 @@ public class Interpreter {
         }
     }
 
-
     private List<DataInstance> filterDataInstancesWithArchetypeId(List<DataInstance> dataInstances, String archetypeId) {
         return dataInstances.stream()
                 .filter(s -> archetypeId.equals(s.modelId()))
@@ -719,7 +720,6 @@ public class Interpreter {
         }
         return found == null ? Collections.emptyList() : Collections.singletonList(found);
     }
-
 
     List<DataInstance> evaluateDataInstancesWithPredicate(List<DataInstance> dataInstances, List<ExpressionItem> predicateStatements,
                                                           GuideOntology guideOntology) {
@@ -761,11 +761,5 @@ public class Interpreter {
             }
         }
         throw new IllegalArgumentException("Unsupported operator in predicateStatement: " + predicateStatement);
-    }
-
-    private static void assertNotNull(Object object, String message) {
-        if (object == null) {
-            throw new IllegalArgumentException(message);
-        }
     }
 }

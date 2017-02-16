@@ -6,15 +6,15 @@ public class UnaryExpression extends ExpressionItem {
     private ExpressionItem operand;
     private OperatorKind operator;
 
-    public static UnaryExpression create(ExpressionItem operand,
-                                         OperatorKind operator) {
-        return new UnaryExpression(operand, operator);
-    }
-
     public UnaryExpression(ExpressionItem operand, OperatorKind operator) {
         super();
         this.operand = operand;
         this.operator = operator;
+    }
+
+    public static UnaryExpression create(ExpressionItem operand,
+                                         OperatorKind operator) {
+        return new UnaryExpression(operand, operator);
     }
 
     public ExpressionItem getOperand() {

@@ -7,16 +7,16 @@ public final class BinaryExpression extends ExpressionItem {
     private ExpressionItem right;
     private OperatorKind operator;
 
-    public static BinaryExpression create(ExpressionItem left, ExpressionItem right,
-                                          OperatorKind operator) {
-        return new BinaryExpression(left, right, operator);
-    }
-
     public BinaryExpression(ExpressionItem left, ExpressionItem right,
                             OperatorKind operator) {
         this.left = left;
         this.right = right;
         this.operator = operator;
+    }
+
+    public static BinaryExpression create(ExpressionItem left, ExpressionItem right,
+                                          OperatorKind operator) {
+        return new BinaryExpression(left, right, operator);
     }
 
     public String toString() {

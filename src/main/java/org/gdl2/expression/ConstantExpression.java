@@ -5,12 +5,12 @@ import java.util.Objects;
 public class ConstantExpression extends ExpressionItem {
     private String value;
 
-    public static ConstantExpression create(String value) {
-        return new ConstantExpression(value);
-    }
-
     public ConstantExpression(String value) {
         this.value = value;
+    }
+
+    public static ConstantExpression create(String value) {
+        return new ConstantExpression(value);
     }
 
     public String getValue() {

@@ -21,32 +21,15 @@ public class DataInstance {
         this.modelId = modelId;
     }
 
-    public static class Builder {
-        private DataInstance dataInstance = new DataInstance();
-
-        public Builder modelId(String modelId) {
-            assertNotNull(modelId, "Null modelId");
-            dataInstance.modelId = modelId;
-            return this;
+    private static void assertNotNull(Object object, String message) {
+        if (object == null) {
+            throw new IllegalArgumentException(message);
         }
+    }
 
-        /**
-         * Add keyed value of dataInstance.
-         *
-         * @param key       not null
-         * @param dataValue ignored if null value
-         */
-        public Builder addValue(String key, DataValue dataValue) {
-            assertNotNull(key, "Null key");
-            if (dataValue != null) {
-                dataInstance.values.put(key, dataValue);
-            }
-            return this;
-        }
-
-        public DataInstance build() {
-            assertNotNull(dataInstance.modelId, "modelId");
-            return dataInstance;
+    private static void assertTrue(boolean expression, String message) {
+        if (!expression) {
+            throw new IllegalArgumentException(message);
         }
     }
 
@@ -144,15 +127,32 @@ public class DataInstance {
         return this.modelId;
     }
 
-    private static void assertNotNull(Object object, String message) {
-        if (object == null) {
-            throw new IllegalArgumentException(message);
-        }
-    }
+    public static class Builder {
+        private DataInstance dataInstance = new DataInstance();
 
-    private static void assertTrue(boolean expression, String message) {
-        if (!expression) {
-            throw new IllegalArgumentException(message);
+        public Builder modelId(String modelId) {
+            assertNotNull(modelId, "Null modelId");
+            dataInstance.modelId = modelId;
+            return this;
+        }
+
+        /**
+         * Add keyed value of dataInstance.
+         *
+         * @param key       not null
+         * @param dataValue ignored if null value
+         */
+        public Builder addValue(String key, DataValue dataValue) {
+            assertNotNull(key, "Null key");
+            if (dataValue != null) {
+                dataInstance.values.put(key, dataValue);
+            }
+            return this;
+        }
+
+        public DataInstance build() {
+            assertNotNull(dataInstance.modelId, "modelId");
+            return dataInstance;
         }
     }
 }

@@ -9,20 +9,6 @@ public class FunctionalExpression extends ExpressionItem {
     private Function function;
     private List<ExpressionItem> items;
 
-    public static FunctionalExpression create(Function function) {
-        return new FunctionalExpression(function);
-    }
-
-    public static FunctionalExpression create(Function function, ExpressionItem item) {
-        List<ExpressionItem> items = new ArrayList<>();
-        items.add(item);
-        return new FunctionalExpression(function, items);
-    }
-
-    public static FunctionalExpression create(Function function, List<ExpressionItem> items) {
-        return new FunctionalExpression(function, items);
-    }
-
     public FunctionalExpression(Function function) {
         this(function, null);
     }
@@ -35,6 +21,20 @@ public class FunctionalExpression extends ExpressionItem {
         if (items != null) {
             this.items = new ArrayList<>(items);
         }
+    }
+
+    public static FunctionalExpression create(Function function) {
+        return new FunctionalExpression(function);
+    }
+
+    public static FunctionalExpression create(Function function, ExpressionItem item) {
+        List<ExpressionItem> items = new ArrayList<>();
+        items.add(item);
+        return new FunctionalExpression(function, items);
+    }
+
+    public static FunctionalExpression create(Function function, List<ExpressionItem> items) {
+        return new FunctionalExpression(function, items);
     }
 
     public Function getFunction() {

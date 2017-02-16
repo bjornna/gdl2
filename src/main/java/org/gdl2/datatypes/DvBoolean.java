@@ -12,16 +12,16 @@ public final class DvBoolean extends DataValue {
         this.value = value;
     }
 
-    public boolean getValue() {
-        return value;
-    }
-
     public static DvBoolean valueOf(boolean value) {
         return value ? TRUE : FALSE;
     }
 
     public static DvBoolean valueOf(String value) {
         return Boolean.TRUE.toString().equalsIgnoreCase(value) ? TRUE : FALSE;
+    }
+
+    public boolean getValue() {
+        return value;
     }
 
     @Override

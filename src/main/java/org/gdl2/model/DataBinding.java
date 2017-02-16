@@ -8,11 +8,13 @@ import java.util.Map;
 
 @Value
 public final class DataBinding {
-    public enum Type { INPUT, OUTPUT }
-
     private String id;
     private Type type;
     private String modelId;
     private Map<String, Element> elements;
     private List<ExpressionItem> predicates;
+
+    public enum Type {
+        INPUT, OUTPUT
+    }
 }

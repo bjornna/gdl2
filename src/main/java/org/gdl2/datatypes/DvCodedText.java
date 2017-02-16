@@ -16,10 +16,6 @@ public final class DvCodedText extends DataValue {
         this(value, new CodePhrase(terminology, code));
     }
 
-    public CodePhrase getDefiningCode() {
-        return code;
-    }
-
     public static DvCodedText valueOf(String value) {
         String[] tokens = value.split("::");
         if (tokens.length != 2) {
@@ -30,6 +26,10 @@ public final class DvCodedText extends DataValue {
             throw new IllegalArgumentException("failed to parse DvCodedText '" + value + "', wrong number of tokens.");
         }
         return new DvCodedText(tokens2[1], new CodePhrase(tokens[0], tokens2[0]));
+    }
+
+    public CodePhrase getDefiningCode() {
+        return code;
     }
 
     @Override

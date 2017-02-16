@@ -16,10 +16,6 @@ public final class DvOrdinal extends DataValue {
         this(value, new DvCodedText(label, terminology, code));
     }
 
-    public String getTerminologyId() {
-        return this.symbol.getDefiningCode().getTerminology();
-    }
-
     public static DvOrdinal valueOf(String value) {
         int index = value.indexOf("|");
         if (index < 0) {
@@ -33,6 +29,10 @@ public final class DvOrdinal extends DataValue {
         }
         String str = value.substring(index + 1);
         return new DvOrdinal(ordinalValue, DvCodedText.valueOf(str));
+    }
+
+    public String getTerminologyId() {
+        return this.symbol.getDefiningCode().getTerminology();
     }
 
     @Override

@@ -8,14 +8,6 @@ public class Variable extends ExpressionItem {
     private String path;
     private String attribute;
 
-    public static Variable createByCode(String code) {
-        return new Variable(code);
-    }
-
-    public static Variable createByPath(String path) {
-        return new Variable(null, null, path);
-    }
-
     public Variable(String code, String name, String path, String attribute) {
         this.name = name;
         this.code = code;
@@ -33,6 +25,14 @@ public class Variable extends ExpressionItem {
 
     public Variable(String code) {
         this.code = code;
+    }
+
+    public static Variable createByCode(String code) {
+        return new Variable(code);
+    }
+
+    public static Variable createByPath(String path) {
+        return new Variable(null, null, path);
     }
 
     public String getName() {
@@ -81,10 +81,10 @@ public class Variable extends ExpressionItem {
             return false;
         }
         Variable variable = (Variable) other;
-        return Objects.equals(name, variable.name) 
-              && Objects.equals(code, variable.code) 
-              && Objects.equals(path, variable.path) 
-              && Objects.equals(attribute, variable.attribute);
+        return Objects.equals(name, variable.name)
+                && Objects.equals(code, variable.code)
+                && Objects.equals(path, variable.path)
+                && Objects.equals(attribute, variable.attribute);
     }
 
     @Override

@@ -329,15 +329,6 @@ public class ExpressionEvaluationTest extends TestCommon {
     }
 
     @Test
-    public void can_evaluate_variable_with_datetime_value() {
-        // $gt0113.value
-        Variable variable = new Variable("gt0113", null, null, "value");
-        inputMap.put("gt0113", asList(DvDateTime.valueOf("1940-01-01T00:00:00")));
-        value = interpreter.evaluateExpressionItem(variable, inputMap);
-        assertThat(value, is(-946774800000L));
-    }
-
-    @Test
     public void can_evaluate_variable_with_set_currentDateTime_value() {
         Variable variable = Variable.createByCode(Interpreter.CURRENT_DATETIME);
         HashMap<String, DataValue> systemParameters = new HashMap<>();

@@ -9,6 +9,14 @@
     <description>Guideline Definition Language v2 reference java implementation</description>
        
     <url>https://github.com/gdl-lang/gdl2</url>
+	
+    <issueManagement>
+	<url>https://github.com/gdl-lang/gdl2</url>
+     </issueManagement>
+     <ciManagement>
+	<system>Travis</system>
+	<url>https://travis-ci.org/gdl-lang/gdl2/</url>
+     </ciManagement>
          
     <parent>
 	<groupId>org.sonatype.oss</groupId>

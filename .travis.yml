@@ -31,11 +31,7 @@ env:
 
 install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
-before_install:
-  - openssl aes-256-cbc -pass pass:$GPG_PASSPHRASE -in codesigning.asc.enc -out codesigning.asc -a
-  - gpg --fast-import codesigning.asc
-
-script: mvn release:clean release:prepare release:perform -B -e --settings settings.xml
+script: mvn deploy --settings settings.xml
 
 cache:
   directories:

@@ -46,4 +46,4 @@ deploy:
 
 after_success:
   - ./cd/before-deploy.sh
-  - mvn release:clean release:prepare release:perform --settings settings.xml
+  - mvn release:clean release:prepare release:perform -B -e --settings settings.xml

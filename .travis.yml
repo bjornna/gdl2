@@ -45,5 +45,5 @@ deploy:
     tags: true
 
 after_success:
-  - ./cd/before-deploy.sh
-  - mvn release:clean release:prepare release:perform -B -e --settings settings.xml
+  - ./before-deploy.sh
+  - ./deploy.sh

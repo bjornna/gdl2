@@ -29,19 +29,13 @@ env:
       EHVw5YfXAaTz9z5/JR0+z/k1gJFVUfHYeFTjKaKqYUmXCSiEUXz+4aBQfxaKIstg5Ruj7Wozl3cT99eW58lwIKhuCuKp2GJrTwtCc20GfIAgI5xA+VH2afI6c7uPWhSFAOD5Zg="
     - # ^^ GPG_PASSPHRASE
 
-install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
-script: mvn deploy --settings settings.xml
+install: mvn install -P -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+script: mvn test -P -B
 
 cache:
   directories:
     - ~/.m2/repository
 
-deploy:
-  provider: releases
-  api_key: TmHbjyu5szmmEPGBzALi
-  file: target/*.jar
-  skip_cleanup: true
-  on:
-    tags: true
-
+after_success:
+  - ./before-deploy.sh
+  - ./deploy.sh

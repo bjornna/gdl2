@@ -20,6 +20,7 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     private Interpreter interpreter;
     private Map<String, List<DataValue>> inputMap = new HashMap<>();
     private Object value;
+    private Map<String, DataValue> systemParameters = new HashMap<>();
 
     @BeforeMethod
     public void setUp() {
@@ -30,7 +31,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_years_expect_false() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-65,a)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-01-09T23:59:59"));
         inputMap.put("gt0113", asList(DvDateTime.valueOf("1952-01-10T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -41,7 +41,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_years_expect_true() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-65,a)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-01-10T00:00:01"));
         inputMap.put("gt0113", asList(DvDateTime.valueOf("1952-01-10T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -52,7 +51,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_months_expect_false() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-3,mo)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-04-09T23:59:59"));
         inputMap.put("gt0013", asList(DvDateTime.valueOf("2017-01-10T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -63,7 +61,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_months_expect_true() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-3,mo)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-04-01T00:00:01"));
         inputMap.put("gt0113", asList(DvDateTime.valueOf("2017-01-01T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -74,7 +71,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_days_expect_false() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-14,d)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-01-29T23:59:59"));
         inputMap.put("gt0113", asList(DvDateTime.valueOf("2017-01-16T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -85,7 +81,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     @Test
     public void can_compare_datetime_and_days_expect_true() {
         expressionItem = parseExpression("$gt0113.value<=($currentDateTime.value-14,d)");
-        Map<String, DataValue> systemParameters = new HashMap<>();
         systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-01-30T00:00:01"));
         inputMap.put("gt0113", asList(DvDateTime.valueOf("2017-01-16T00:00:00")));
         interpreter = new Interpreter(systemParameters);
@@ -165,4 +160,6 @@ public class EvaluateTimeQuantityExpressionTest extends TestCommon {
         value = interpreter.evaluateExpressionItem(expressionItem, inputMap);
         assertThat(value, is(false));
     }
+
+
 }

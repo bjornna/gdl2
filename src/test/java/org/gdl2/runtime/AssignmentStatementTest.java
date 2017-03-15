@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.gdl2.runtime.Interpreter.CURRENT_DATETIME;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.closeTo;
@@ -25,10 +26,11 @@ public class AssignmentStatementTest extends TestCommon {
     private HashMap<String, List<DataValue>> inputMap;
     private HashMap<String, DataValue> resultMap;
     private DataValue dataValue;
+    private Map<String, DataValue> systemParameters = new HashMap<>();
 
     @BeforeMethod
     public void setUp() {
-        interpreter = new Interpreter();
+        interpreter = new Interpreter(systemParameters);
         inputMap = new HashMap<>();
         resultMap = new HashMap<>();
         dataValue = null;
@@ -193,5 +195,16 @@ public class AssignmentStatementTest extends TestCommon {
         interpreter.performAssignmentStatements(assignment, inputMap, new HashMap<>(), resultMap);
         dataValue = resultMap.get(code);
         assertThat(dataValue, instanceOf(DvBoolean.class));
+    }
+
+    @Test
+    public void can_calculate_years_using_datetime_value() throws Exception {
+        AssignmentExpression assignment = parseAssignmentExpression("$gt0005.magnitude=(($currentDateTime.value-$gt0003.value)/1,a)");
+        systemParameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2017-03-17T10:52:10"));
+        inputMap.put("gt0003", asList(DvDateTime.valueOf("1972-10-20T00:00:00")));
+        interpreter.performAssignmentStatements(assignment, inputMap, new HashMap<>(), resultMap);
+        dataValue = resultMap.get("gt0005");
+        DvCount dvQuantity = (DvCount) dataValue;
+        assertThat(dvQuantity.getMagnitude(), is(44));
     }
 }

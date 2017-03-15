@@ -13,6 +13,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -535,6 +536,12 @@ public class Interpreter {
             return operator == ADDITION ? localDateTime.plus(period) : localDateTime.minus(period);
         } else if (rightValue == null) {
             return operator == NOT;
+        } else if (operator == DIVISION && rightValue instanceof Period && leftValue instanceof Double) {
+            // special case when datetime.value is divided by period (1,a)
+            LocalDateTime localDateTime = systemCurrentDateTime();
+            LocalDateTime localDateTimeWithPeriod = localDateTime.plus((Period) rightValue);
+            double rightValueDouble = new Long(ChronoUnit.MILLIS.between(localDateTime, localDateTimeWithPeriod)).doubleValue();
+            return ((Double) leftValue) / rightValueDouble;
         }
         throw new UnsupportedOperationException("Unsupported combination of left: "
                 + leftValue + ", right: " + rightValue + ", operator: " + operator);

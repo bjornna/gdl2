@@ -25,8 +25,8 @@ public class BodySurfaceAreaCalculationTest extends TestCommon {
     public void can_run_body_surface_calculation_rule_as_single_guideline() throws Exception {
         Guideline guideline = loadGuideline(BSA_CALCULATION);
         ArrayList<DataInstance> dataInstances = new ArrayList<>();
-        dataInstances.add(toWeight("72.0,kg", "2012-01-01T00:00:00"));
-        dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
 
         List<DataInstance> result = interpreter.executeSingleGuideline(guideline, dataInstances);
         DataInstance dataInstance = result.get(0);
@@ -40,8 +40,8 @@ public class BodySurfaceAreaCalculationTest extends TestCommon {
     public void can_run_body_surface_calculation_rule_as_guidelines() throws Exception {
         Guideline guideline = loadGuideline(BSA_CALCULATION);
         ArrayList<DataInstance> dataInstances = new ArrayList<>();
-        dataInstances.add(toWeight("72.0,kg", "2012-01-01T00:00:00"));
-        dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
 
         List<DataInstance> result = interpreter.executeGuidelines(Collections.singletonList(guideline), dataInstances);
         DataInstance dataInstance = result.get(0);
@@ -55,8 +55,8 @@ public class BodySurfaceAreaCalculationTest extends TestCommon {
     public void can_run_body_surface_calculation_rule_without_when_statements() throws Exception {
         Guideline guideline = loadGuideline(BSA_CALCULATION_WITHOUT_WHEN);
         ArrayList<DataInstance> dataInstances = new ArrayList<>();
-        dataInstances.add(toWeight("72.0,kg", "2012-01-01T00:00:00"));
-        dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
 
         List<DataInstance> result = interpreter.executeSingleGuideline(guideline, dataInstances);
         DataInstance dataInstance = result.get(0);

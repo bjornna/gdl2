@@ -27,8 +27,8 @@ public class FiredRulesTest extends TestCommon {
     public void can_evaluate_fired_rule_expected_true() throws Exception {
         guideline = loadGuideline(BSA_CALCULATION_FIRED_RULE);
         ArrayList<DataInstance> dataInstances = new ArrayList<>();
-        dataInstances.add(toWeight("72.0,kg", "2012-01-01T00:00:00"));
-        dataInstances.add(toHeight("180.0,cm", "2012-01-01T00:00:00"));
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
 
         Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
         DataValue dataValue = result.get("gt0014");
@@ -41,8 +41,8 @@ public class FiredRulesTest extends TestCommon {
     public void can_evaluate_fired_rule_expected_false() throws Exception {
         guideline = loadGuideline(BSA_CALCULATION_FIRED_RULE);
         ArrayList<DataInstance> dataInstances = new ArrayList<>();
-        dataInstances.add(toWeight("158.7,lbs", "2012-01-01T00:00:00"));
-        dataInstances.add(toHeight("5.95,ft", "2012-01-01T00:00:00"));
+        dataInstances.add(toWeight("158.7,lbs"));
+        dataInstances.add(toHeight("5.95,ft"));
 
         Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
         DataValue dataValue = result.get("gt0014");

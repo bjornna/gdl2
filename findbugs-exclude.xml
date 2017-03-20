@@ -1,0 +1,6 @@
+<FindBugsFilter>
+    <Match>
+        <!-- exclude javacc generated code -->
+        <Package  name="org.gdl2.expression.parser" />
+    </Match>
+</FindBugsFilter>

@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import org.gdl2.expression.ExpressionItem;
-import org.gdl2.expression.ExpressionParser;
+import org.gdl2.expression.parser.ExpressionParser;
 
 import java.io.StringReader;
 import java.lang.reflect.Type;

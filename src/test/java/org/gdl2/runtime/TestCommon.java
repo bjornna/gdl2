@@ -8,14 +8,12 @@ import org.gdl2.datatypes.DvDateTime;
 import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.expression.AssignmentExpression;
 import org.gdl2.expression.ExpressionItem;
-import org.gdl2.expression.ExpressionParser;
+import org.gdl2.expression.parser.ExpressionParser;
 import org.gdl2.model.Guideline;
 
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.testng.Assert.fail;
 
 public class TestCommon {
     static final String NULL_STRING = "NULL";

@@ -410,7 +410,7 @@ public class Interpreter {
     }
 
     private Object convertTimeQuantityToPeriodOrMilliSeconds(DvQuantity dvQuantity) {
-        int magnitude = new Double(dvQuantity.getMagnitude()).intValue();
+        int magnitude = Double.valueOf(dvQuantity.getMagnitude()).intValue();
         if ("a".equals(dvQuantity.getUnits())) {
             return Period.ofYears(magnitude);
         } else if ("mo".equals(dvQuantity.getUnits())) {
@@ -540,7 +540,7 @@ public class Interpreter {
             // special case when datetime.value is divided by period (1,a)
             LocalDateTime localDateTime = systemCurrentDateTime();
             LocalDateTime localDateTimeWithPeriod = localDateTime.plus((Period) rightValue);
-            double rightValueDouble = new Long(ChronoUnit.MILLIS.between(localDateTime, localDateTimeWithPeriod)).doubleValue();
+            double rightValueDouble = Long.valueOf(ChronoUnit.MILLIS.between(localDateTime, localDateTimeWithPeriod)).doubleValue();
             return ((Double) leftValue) / rightValueDouble;
         }
         throw new UnsupportedOperationException("Unsupported combination of left: "

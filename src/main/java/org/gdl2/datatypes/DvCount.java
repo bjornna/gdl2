@@ -19,6 +19,10 @@ public final class DvCount extends DataValue {
         }
     }
 
+    public static DvCount valueOf(int value) {
+        return new DvCount(value);
+    }
+
     @Override
     public String toString() {
         return Integer.toString(magnitude);

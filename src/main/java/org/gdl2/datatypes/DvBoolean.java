@@ -4,8 +4,8 @@ import lombok.Value;
 
 @Value
 public final class DvBoolean extends DataValue {
-    private static final DvBoolean TRUE = new DvBoolean(true);
-    private static final DvBoolean FALSE = new DvBoolean(false);
+    public static final DvBoolean TRUE = new DvBoolean(true);
+    public static final DvBoolean FALSE = new DvBoolean(false);
     private boolean value;
 
     private DvBoolean(boolean value) {

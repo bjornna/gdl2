@@ -29,5 +29,6 @@ public class ContinuousAssignmentsTest extends TestCommon {
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getMagnitude(), is(2.0));
+        assertThat(dvQuantity.getPrecision(), is(1));
     }
 }

@@ -3,7 +3,6 @@ package org.gdl2.runtime;
 import lombok.NonNull;
 import org.gdl2.datatypes.*;
 import org.gdl2.expression.*;
-import org.gdl2.expression.OperatorKind;
 import org.gdl2.model.*;
 import org.gdl2.terminology.Binding;
 import org.gdl2.terminology.TermBinding;
@@ -300,8 +299,8 @@ public class Interpreter {
         Class type = typeMap.get(variable.getCode());
         DvQuantity dvQuantity = null;
         List<DataValue> valueList = input.get(variable.getCode());
-        if (valueList != null && !valueList.isEmpty() && (valueList.get(0) instanceof DvQuantity)) {
-            dvQuantity = (DvQuantity) valueList.get(0);
+        if (valueList != null && !valueList.isEmpty() && (valueList.get(valueList.size() - 1) instanceof DvQuantity)) {
+            dvQuantity = (DvQuantity) valueList.get(valueList.size() - 1);
         }
         if (dvQuantity != null || DvQuantity.class.equals(type)) {
             if (dvQuantity == null) {

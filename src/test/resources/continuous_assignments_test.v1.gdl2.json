@@ -46,9 +46,9 @@
       "gt0009": {
         "id": "gt0009",
         "then": [
-          "$gt0013.precision=0",
           "$gt0013.units='kg/m2'",
           "$gt0013.magnitude=1",
+          "$gt0013.precision=1",
           "$gt0013.magnitude=($gt0013.magnitude+1)"
         ],
         "priority": 1

@@ -1,0 +1,72 @@
+{
+  "gdl_version": "2.0",
+  "id": "continuous_assignments_test.v1",
+  "concept": "gt0015",
+  "language": {
+    "original_language": "ISO_639-1::en"
+  },
+  "description": {
+    "original_author": {
+      "date": "2017-04-02",
+      "name": "Author",
+      "organisation": "CDS",
+      "email": "author@cambio.se"
+    },
+    "lifecycle_state": "Author draft",
+    "details": {
+     "en": {
+        "id": "en",
+        "purpose": "test",
+        "use": "test",
+        "misuse": "test"
+      }
+    },
+    "other_details": {
+      "references": "1. ref "
+    }
+  },
+  "definition": {
+    "default_actions": [
+      "$gt0004.units='kg/m2'"
+    ],
+    "data_bindings": {
+      "gt0019": {
+        "id": "gt0019",
+        "model_id": "openEHR-EHR-OBSERVATION.body_surface_area.v1",
+        "type": "OUTPUT",
+        "elements": {
+          "gt0013": {
+            "id": "gt0013",
+            "path": "/data[at0001]/events[at0002]/data[at0003]/items[at0004]"
+          }
+        }
+      }
+    },
+    "rules": {
+      "gt0009": {
+        "id": "gt0009",
+        "then": [
+          "$gt0013.precision=0",
+          "$gt0013.units='kg/m2'",
+          "$gt0013.magnitude=1",
+          "$gt0013.magnitude=($gt0013.magnitude+1)"
+        ],
+        "priority": 1
+      }
+    }
+  },
+  "ontology": {
+    "term_definitions": {
+      "en": {
+        "id": "en",
+        "terms": {
+          "gt0015": {
+            "id": "gt0015",
+            "text": "testn",
+            "description": "test"
+          }
+        }
+      }
+    }
+  }
+}

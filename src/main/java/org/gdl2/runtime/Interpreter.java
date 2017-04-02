@@ -115,7 +115,6 @@ public class Interpreter {
                     guide.getOntology(),
                     firedRules);
             mergeValueMapIntoListValueMap(resultPerRuleExecution, inputAndResult);
-
         }
         return collectValueListMap(inputAndResult);
     }
@@ -222,6 +221,7 @@ public class Interpreter {
         Map<String, Class> typeMap = typeBindingThroughAssignmentStatements(rule.getThen());
         for (ExpressionItem thenStatement : rule.getThen()) {
             performAssignmentStatements((AssignmentExpression) thenStatement, input, typeMap, result);
+            mergeValueMapIntoListValueMap(result, input);
         }
         firedRules.add(rule.getId());
         return result;

@@ -35,7 +35,7 @@
         <profile>
             <id>sonar</id>
             <properties>
-                <sonar.host.url>https://sonar-qube.cambiocds.com</sonar.host.url>
+                <sonar.host.url>http://sonar-qube.cambiocds.com:9000</sonar.host.url>
                 <sonar.login>${env.SONAR_LOGIN}</sonar.login>
                 <sonar.exclusions>file:**/generated-sources/**</sonar.exclusions>
             </properties>

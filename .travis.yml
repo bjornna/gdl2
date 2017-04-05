@@ -29,8 +29,7 @@ env:
       EHVw5YfXAaTz9z5/JR0+z/k1gJFVUfHYeFTjKaKqYUmXCSiEUXz+4aBQfxaKIstg5Ruj7Wozl3cT99eW58lwIKhuCuKp2GJrTwtCc20GfIAgI5xA+VH2afI6c7uPWhSFAOD5Zg="
     - # ^^ GPG_PASSPHRASE
 
-install: mvn install sonar:sonar -DskipTests=true -Dmaven.javadoc.skip=true -B -V -P sonar --settings settings.xml
-script: mvn test -B
+install: mvn install sonar:sonar -Dmaven.javadoc.skip=true -B -V -P sonar --settings settings.xml
 
 cache:
   directories:

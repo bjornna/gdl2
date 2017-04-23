@@ -1,10 +1,12 @@
 package org.gdl2.datatypes;
 
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
 @NoArgsConstructor(force = true)
+@Builder
 public final class CodePhrase extends DataValue {
     private String terminology;
     private String code;

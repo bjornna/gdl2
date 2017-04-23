@@ -1,16 +1,18 @@
 package org.gdl2.datatypes;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 
 @Value
+@Builder
 public final class DvQuantity extends DataValue {
     private static final char DECIMAL_SEPARATOR = '.';
+    private String units;
     private double magnitude;
     private int precision;
-    private String units;
 
     public DvQuantity(String units, double magnitude, int precision) {
         this.magnitude = magnitude;

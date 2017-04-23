@@ -1,8 +1,10 @@
 package org.gdl2.datatypes;
 
+import lombok.Builder;
 import lombok.Value;
 
 @Value
+@Builder
 public final class DvOrdinal extends DataValue {
     private int value;
     private DvCodedText symbol;

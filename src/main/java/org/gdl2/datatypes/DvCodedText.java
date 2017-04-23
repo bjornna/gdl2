@@ -1,9 +1,11 @@
 package org.gdl2.datatypes;
 
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
 @Value
+@Builder
 @NoArgsConstructor(force = true)
 public final class DvCodedText extends DataValue {
     private String value;

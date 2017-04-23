@@ -32,6 +32,25 @@
                 <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
             </properties>
         </profile>
+        <profile>
+            <id>sonar</id>
+            <properties>
+                <sonar.host.url>https://sonar-qube.cambiocds.com</sonar.host.url>
+                <sonar.login>${env.SONAR_LOGIN}</sonar.login>
+                <sonar.exclusions>file:**/generated-sources/**</sonar.exclusions>
+            </properties>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.sonarsource.scanner.maven</groupId>
+                            <artifactId>sonar-maven-plugin</artifactId>
+                            <version>3.2</version>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
     </profiles>
     <activeProfiles/>
 </settings>

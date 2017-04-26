@@ -39,7 +39,7 @@ public class TestCommon {
                 .build();
     }
 
-    Guideline loadGuideline(String name) throws Exception {
+    public Guideline loadGuideline(String name) throws Exception {
         return Gdl2.fromGdl2(loadJson(name));
     }
 

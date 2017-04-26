@@ -24,6 +24,8 @@ import static org.gdl2.expression.OperatorKind.*;
 public class Interpreter {
     public static final String CURRENT_DATETIME = "currentDateTime";
     private static final String COUNT = "count";
+    private static final String SUM = "sum";
+
     private static final long HOUR_IN_MILLISECONDS = 3600 * 1000L;
     private Map<String, DataValue> systemParameters;
 
@@ -326,6 +328,9 @@ public class Interpreter {
             try {
                 if (value instanceof Double) {
                     int intValue = ((Double) value).intValue();
+                    result.put(variable.getCode(), new DvCount(intValue));
+                } else if (value instanceof Integer) {
+                    int intValue = (Integer) value;
                     result.put(variable.getCode(), new DvCount(intValue));
                 } else {
                     throw new IllegalArgumentException("Unexpected double value: " + value + ", in assignmentExpression: " + assignmentExpression);
@@ -656,11 +661,43 @@ public class Interpreter {
                 .anyMatch(bindingCode -> codedTextDefiningCode.getCode().startsWith(bindingCode));
     }
 
+    private Object evaluateAggregationSum(Variable variable, Map<String, List<DataValue>> valueMap) {
+        String key = variable.getCode();
+        List<DataValue> valueList = valueMap.get(key);
+        if (valueList == null || valueList.isEmpty()) {
+            return 0;
+        }
+        DataValue first = valueList.get(0);
+        if (first instanceof DvCount) {
+            int sum = 0;
+            for (DataValue dataValue : valueList) {
+                sum += ((DvCount) dataValue).getMagnitude();
+            }
+            return sum;
+        } else if (first instanceof DvQuantity) {
+            double sum = 0;
+            for (DataValue dataValue : valueList) {
+                sum += ((DvQuantity) dataValue).getMagnitude();
+            }
+            return sum;
+        } else if (first instanceof DvOrdinal) {
+            int sum = 0;
+            for (DataValue dataValue : valueList) {
+                sum += ((DvOrdinal) dataValue).getValue();
+            }
+            return sum;
+        } else {
+            throw new IllegalArgumentException("Supported data type for sum(): " + first.getClass());
+        }
+    }
+
     private Object retrieveValueFromValueMap(Variable variable, Map<String, List<DataValue>> valueMap) {
         String key = variable.getCode() != null ? variable.getCode() : variable.getPath();
 
         if (COUNT.equals(variable.getAttribute())) {
             return valueMap.getOrDefault(key, Collections.emptyList()).size();
+        } else if (SUM.equals(variable.getAttribute())) {
+            return evaluateAggregationSum(variable, valueMap);
         }
         if (key.endsWith("/value/value")) {
             key = key.substring(0, key.length() - 12);

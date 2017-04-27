@@ -126,9 +126,9 @@ public class PredicateTest extends TestCommon {
         assertThat(result.get(0).getDvCount("gt0011").getMagnitude(), is(1));
         assertThat(result.get(1).getDvCount("gt0011").getMagnitude(), is(5));
         assertThat(result.get(2).getDvCount("gt0011").getMagnitude(), is(9));
-        assertThat(result.get(0).getDvCodedText(path).getCode().getCode(), is("I10"));
-        assertThat(result.get(1).getDvCodedText(path).getCode().getCode(), is("I11"));
-        assertThat(result.get(2).getDvCodedText(path).getCode().getCode(), is("I11"));
+        assertThat(result.get(0).getDvCodedText(path).getDefiningCode().getCode(), is("I10"));
+        assertThat(result.get(1).getDvCodedText(path).getDefiningCode().getCode(), is("I11"));
+        assertThat(result.get(2).getDvCodedText(path).getDefiningCode().getCode(), is("I11"));
     }
 
     @Test
@@ -175,7 +175,7 @@ public class PredicateTest extends TestCommon {
                 predicates, guideline.getOntology());
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getDvCount(countCode).getMagnitude(), is(9));
-        assertThat(result.get(0).getDvCodedText(codePath).getCode().getCode(), is("I21"));
+        assertThat(result.get(0).getDvCodedText(codePath).getDefiningCode().getCode(), is("I21"));
     }
 
     @Test

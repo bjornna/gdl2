@@ -11,7 +11,7 @@ public class BuildersTest {
     public void can_create_dv_coded_text_using_builder() {
         DvCodedText codedText = DvCodedText.builder()
                 .value("Heart failure")
-                .code(CodePhrase.builder()
+                .definingCode(CodePhrase.builder()
                         .terminology("ICD10")
                         .code("I50").build())
                 .build();
@@ -39,7 +39,7 @@ public class BuildersTest {
                 .value(1)
                 .symbol(DvCodedText.builder()
                         .value("label")
-                        .code(CodePhrase.builder()
+                        .definingCode(CodePhrase.builder()
                                 .terminology("local")
                                 .code("at0001")
                                 .build())
@@ -48,6 +48,6 @@ public class BuildersTest {
         assertThat(dvOrdinal.getValue(), is(1));
         assertThat(dvOrdinal.getSymbol().getValue(), is("label"));
         assertThat(dvOrdinal.getTerminologyId(), is("local"));
-        assertThat(dvOrdinal.getSymbol().getCode().getCode(), is("at0001"));
+        assertThat(dvOrdinal.getSymbol().getDefiningCode().getCode(), is("at0001"));
     }
 }

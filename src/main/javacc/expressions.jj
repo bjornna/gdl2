@@ -639,7 +639,7 @@ List < AssignmentExpression > assignmentExpressions() :
 ConstantExpression constant_expression() :
 {
   Token t = null;
-  CodePhrase code = null;
+  CodePhrase definingCode = null;
   String text = null;
   String units = null;
   Integer order = null;
@@ -684,15 +684,15 @@ ConstantExpression constant_expression() :
   | t = < SYM_TRUE >
   | t = < SYM_FALSE >
   | LOOKAHEAD(2)
-    code = code_phrase_raw() [ text = label() ]
+    definingCode = code_phrase_raw() [ text = label() ]
     {
       if (text != null)
       {
-        return new CodedTextConstant(text, code);
+        return new CodedTextConstant(text, definingCode);
       }
       else
       {
-        return new CodePhraseConstant(code);
+        return new CodePhraseConstant(definingCode);
       }
     }
   | t = < V_QUANTITY >
@@ -713,7 +713,7 @@ Variable variable() :
 {
   Variable v;
   Token t;
-  String code = null;
+  String definingCode = null;
   String path = null;
   String label = null;
   String attribute = null;
@@ -726,7 +726,7 @@ Variable variable() :
     | t = < SYM_CURRENT_DATETIME >
     )
     {
-      code = t.image;
+      definingCode = t.image;
     }
     [ label = label() ]
   | t = < V_ABSOLUTE_PATH >
@@ -741,7 +741,7 @@ Variable variable() :
     }
   ]
   {
-    return new Variable(code, label, path, attribute);
+    return new Variable(definingCode, label, path, attribute);
   }
 }
 

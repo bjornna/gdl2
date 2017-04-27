@@ -9,15 +9,15 @@ import lombok.Value;
 @NoArgsConstructor(force = true)
 public final class DvCodedText extends DataValue {
     private String value;
-    private CodePhrase code;
+    private CodePhrase definingCode;
 
-    public DvCodedText(String value, CodePhrase code) {
+    public DvCodedText(String value, CodePhrase definingCode) {
         this.value = value;
-        this.code = code;
+        this.definingCode = definingCode;
     }
 
-    public DvCodedText(String value, String terminology, String code) {
-        this(value, new CodePhrase(terminology, code));
+    public DvCodedText(String value, String terminology, String definingCode) {
+        this(value, new CodePhrase(terminology, definingCode));
     }
 
     public static DvCodedText valueOf(String value) {
@@ -32,12 +32,8 @@ public final class DvCodedText extends DataValue {
         return new DvCodedText(tokens2[1], new CodePhrase(tokens[0], tokens2[0]));
     }
 
-    public CodePhrase getDefiningCode() {
-        return code;
-    }
-
     @Override
     public String toString() {
-        return code.toString() + "|" + value + "|";
+        return definingCode.toString() + "|" + value + "|";
     }
 }

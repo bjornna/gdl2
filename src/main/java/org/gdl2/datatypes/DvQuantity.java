@@ -1,6 +1,7 @@
 package org.gdl2.datatypes;
 
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.text.DecimalFormat;
@@ -8,6 +9,7 @@ import java.text.DecimalFormatSymbols;
 
 @Value
 @Builder
+@NoArgsConstructor(force = true)
 public final class DvQuantity extends DataValue {
     private static final char DECIMAL_SEPARATOR = '.';
     private String units;

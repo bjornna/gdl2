@@ -3,19 +3,23 @@ package org.gdl2.runtime;
 import org.gdl2.datatypes.CodePhrase;
 import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvCodedText;
+import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.expression.AssignmentExpression;
 import org.gdl2.expression.CodedTextConstant;
 import org.gdl2.expression.CreateInstanceExpression;
 import org.gdl2.expression.Variable;
+import org.gdl2.model.Guideline;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 import static org.hamcrest.Matchers.is;
 
 public class CreateStatementTest extends TestCommon {
@@ -54,11 +58,39 @@ public class CreateStatementTest extends TestCommon {
                 Collections.singletonList(new AssignmentExpression(Variable.createByCode("gt0005"),
                         new CodedTextConstant("Present", new CodePhrase("local", "at0004")))));
         interpreter.performAssignmentStatements(createInstanceExpression, inputMap, new HashMap<>(), resultMap);
-        interpreter.mergeValueMapIntoListValueMap(resultMap, inputMap);
         interpreter.performAssignmentStatements(createInstanceExpression, inputMap, new HashMap<>(), resultMap);
-        interpreter.mergeValueMapIntoListValueMap(resultMap, inputMap);
         Variable variable = new Variable("gt0005", null, null, "count");
         Object value = interpreter.evaluateExpressionItem(variable, inputMap);
         assertThat(value, is(2));
+    }
+
+    @Test
+    public void can_create_single_instance() throws Exception {
+        Guideline guideline = loadGuideline(BSA_CALCULATION_USING_CREATE);
+        ArrayList<DataInstance> dataInstances = new ArrayList<>();
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
+        List<DataInstance> result = interpreter.executeSingleGuideline(guideline, dataInstances);
+        assertThat(result.size(), is(1));
+        assertExpectedBodyMassIndexValue(result.get(0));
+    }
+
+    @Test(enabled = false)
+    public void can_create_two_instances() throws Exception {
+        Guideline guideline = loadGuideline(BSA_CALCULATION_USING_CREATE_2);
+        ArrayList<DataInstance> dataInstances = new ArrayList<>();
+        dataInstances.add(toWeight("72.0,kg"));
+        dataInstances.add(toHeight("180.0,cm"));
+        List<DataInstance> result = interpreter.executeSingleGuideline(guideline, dataInstances);
+        assertThat(result.size(), is(2));
+        assertExpectedBodyMassIndexValue(result.get(0));
+        assertExpectedBodyMassIndexValue(result.get(1));
+    }
+
+    private void assertExpectedBodyMassIndexValue(DataInstance dataInstance) {
+        DvQuantity dvQuantity = dataInstance.getDvQuantity("/data[at0001]/events[at0002]/data[at0003]/items[at0004]");
+        assertThat(dvQuantity.getMagnitude(), closeTo(1.90, 0.1));
+        assertThat(dvQuantity.getPrecision(), is(2));
+        assertThat(dvQuantity.getUnits(), is("m2"));
     }
 }

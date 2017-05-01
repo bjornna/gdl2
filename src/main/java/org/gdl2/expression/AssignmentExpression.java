@@ -7,7 +7,6 @@ public class AssignmentExpression extends ExpressionItem {
     private ExpressionItem assignment;
 
     public AssignmentExpression(Variable variable, ExpressionItem assignment) {
-        super();
         this.variable = variable;
         this.assignment = assignment;
     }

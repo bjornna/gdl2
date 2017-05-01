@@ -24,6 +24,8 @@ public class TestCommon {
 
     static final String BSA_CALCULATION = "BSA_Calculation_test.v1.gdl2";
     static final String BSA_CALCULATION_WITHOUT_WHEN = "BSA_Calculation_without_when_test.v1.gdl2";
+    static final String BSA_CALCULATION_USING_CREATE = "BSA_Calculation_using_create_test.v1.gdl2";
+    static final String BSA_CALCULATION_USING_CREATE_2 = "BSA_Calculation_using_create2_test.v1.gdl2";
 
     DataInstance toWeight(String value) {
         return new DataInstance.Builder().modelId(WEIGHT_ARCHETYPE)

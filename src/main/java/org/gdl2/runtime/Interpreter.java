@@ -76,10 +76,19 @@ public class Interpreter {
     }
 
     private Set<String> getCodesForAssignableVariables(GuideDefinition guideDefinition) {
-        return guideDefinition.getRules().entrySet().stream()
+        Set<String> codesFromAssignments = guideDefinition.getRules().entrySet().stream()
                 .flatMap(entry -> entry.getValue().getThen().stream())
+                .filter(s -> !(s instanceof CreateInstanceExpression))
                 .map(assignmentExpression -> ((AssignmentExpression) assignmentExpression).getVariable().getCode())
                 .collect(Collectors.toSet());
+        Set<String> codesFromCreateStatements = guideDefinition.getRules().entrySet().stream()
+                .flatMap(entry -> entry.getValue().getThen().stream())
+                .filter(s -> s instanceof CreateInstanceExpression)
+                .flatMap(createInstanceExpression -> ((CreateInstanceExpression) createInstanceExpression).getAssignmentExpressions().stream())
+                .map(assignmentExpression -> assignmentExpression.getVariable().getCode())
+                .collect(Collectors.toSet());
+        codesFromAssignments.addAll(codesFromCreateStatements);
+        return codesFromAssignments;
     }
 
     Map<String, DataValue> execute(Guideline guide, List<DataInstance> dataInstances) {
@@ -344,10 +353,12 @@ public class Interpreter {
     private void evaluateCreateInstanceExpression(AssignmentExpression assignmentExpression, Map<String, List<DataValue>> input,
                                                   Map<String, Class> typeMap, Map<String, DataValue> result) {
         CreateInstanceExpression createInstanceExpression = (CreateInstanceExpression) assignmentExpression;
-        List<AssignmentExpression> assignmentExpressions = createInstanceExpression.getAssigment().getAssignmentExpressions();
+        List<AssignmentExpression> assignmentExpressions = createInstanceExpression.getAssignmentExpressions();
         for (AssignmentExpression expression : assignmentExpressions) {
             performAssignmentStatements(expression, input, typeMap, result);
+            mergeValueMapIntoListValueMap(result, input);
         }
+        result.putAll(result);
     }
 
     private DvQuantity retrieveDvQuantityFromResultMapOrCreateNew(String code, Map<String, DataValue> resultMap) {

@@ -1,7 +1,10 @@
 package org.gdl2.expression;
 
+import lombok.Value;
+
 import java.util.List;
 
+@Value
 public final class CreateInstanceExpression extends AssignmentExpression {
     public static String FUNCTION_CREATE_NAME = "create";
 
@@ -9,13 +12,7 @@ public final class CreateInstanceExpression extends AssignmentExpression {
         super(variable, new MultipleAssignmentExpression(assignmentExpressions));
     }
 
-    public String toString() {
-        return String.valueOf(getVariable()) + getAssigment();
+    public List<AssignmentExpression> getAssignmentExpressions() {
+        return ((MultipleAssignmentExpression) getAssignment()).getAssignmentExpressions();
     }
-
-    public MultipleAssignmentExpression getAssigment() {
-        return (MultipleAssignmentExpression) this.getAssignment();
-    }
-
-
 }

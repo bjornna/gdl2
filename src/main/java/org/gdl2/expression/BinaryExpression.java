@@ -1,18 +1,14 @@
 package org.gdl2.expression;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Value;
 
+@Value
+@EqualsAndHashCode(callSuper = false)
 public final class BinaryExpression extends ExpressionItem {
     private ExpressionItem left;
     private ExpressionItem right;
     private OperatorKind operator;
-
-    public BinaryExpression(ExpressionItem left, ExpressionItem right,
-                            OperatorKind operator) {
-        this.left = left;
-        this.right = right;
-        this.operator = operator;
-    }
 
     public static BinaryExpression create(ExpressionItem left, ExpressionItem right,
                                           OperatorKind operator) {
@@ -57,36 +53,5 @@ public final class BinaryExpression extends ExpressionItem {
             }
         }
         return buf.toString();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) {
-            return true;
-        }
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
-        BinaryExpression that = (BinaryExpression) other;
-        return Objects.equals(left, that.left)
-                && Objects.equals(right, that.right)
-                && operator == that.operator;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(left, right, operator);
-    }
-
-    public ExpressionItem getLeft() {
-        return left;
-    }
-
-    public ExpressionItem getRight() {
-        return right;
-    }
-
-    public OperatorKind getOperator() {
-        return operator;
     }
 }

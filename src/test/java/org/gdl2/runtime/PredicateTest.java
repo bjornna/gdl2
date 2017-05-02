@@ -7,10 +7,7 @@ import org.hamcrest.Matchers;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -58,6 +55,38 @@ public class PredicateTest extends TestCommon {
                 predicate, null, null);
         assertThat(result.size(), is(1));
         assertThat(result.get(0).getDvCount("gt0011").getMagnitude(), is(8));
+    }
+
+    @Test(enabled = false)
+    public void can_evaluate_predicate_to_get_second_max() throws Exception {
+        String predicateExpression = "/data/events/time/value/value<=(max(/data/events/time))";
+        String path = "/data/events/time";
+        String key = "";
+        ExpressionItem predicate = parseExpression(predicateExpression);
+        List<DataInstance> dataInstanceList = new ArrayList<>();
+        dataInstanceList.add(new DataInstance.Builder()
+                .modelId(archetypeId)
+                .addValue(key, DvCount.valueOf(1))
+                .addValue((path), DvDateTime.valueOf("2010-01-01T00:00:00"))
+                .build());
+        dataInstanceList.add(new DataInstance.Builder()
+                .modelId(archetypeId)
+                .addValue(key, DvCount.valueOf(2))
+                .addValue((path), DvDateTime.valueOf("2012-01-01T00:00:00"))
+                .build());
+        dataInstanceList.add(new DataInstance.Builder()
+                .modelId(archetypeId)
+                .addValue(key, DvCount.valueOf(8))
+                .addValue((path), DvDateTime.valueOf("2015-10-01T00:00:00"))
+                .build());
+        dataInstanceList.add(new DataInstance.Builder()
+                .modelId(archetypeId)
+                .addValue(key, DvCount.valueOf(5))
+                .addValue((path), DvDateTime.valueOf("2013-01-01T00:00:00"))
+                .build());
+        List<DataInstance> result = interpreter.evaluateDataInstancesWithPredicate(dataInstanceList, predicate, null, null);
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0).getDvCount("gt0011").getMagnitude(), is(5));
     }
 
     @Test
@@ -221,7 +250,7 @@ public class PredicateTest extends TestCommon {
         interpreter = new Interpreter(parameters);
         BinaryExpression binaryExpression = new BinaryExpression(
                 new Variable(CURRENT_DATETIME, null, null, "value"),
-                new QuantityConstant(new DvQuantity("mo", 12.0, 0)), OperatorKind.SUBSTRATION);
+                new QuantityConstant(new DvQuantity("mo", 12.0, 0)), OperatorKind.SUBTRACTION);
         BinaryExpression predicate = new BinaryExpression(Variable.createByPath("/data/events/time/value/value"),
                 binaryExpression, OperatorKind.GREATER_THAN_OR_EQUAL);
         List<DataInstance> result = interpreter
@@ -243,7 +272,7 @@ public class PredicateTest extends TestCommon {
         interpreter = new Interpreter(parameters);
         BinaryExpression binaryExpression = new BinaryExpression(
                 new Variable(CURRENT_DATETIME, null, null, "value"),
-                new QuantityConstant(new DvQuantity("mo", 12.0, 0)), OperatorKind.SUBSTRATION);
+                new QuantityConstant(new DvQuantity("mo", 12.0, 0)), OperatorKind.SUBTRACTION);
         BinaryExpression predicate = new BinaryExpression(Variable.createByPath("/data[at0001]/items[at0003]/value/value"),
                 binaryExpression, OperatorKind.GREATER_THAN_OR_EQUAL);
         List<DataInstance> result = interpreter

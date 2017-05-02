@@ -6,7 +6,7 @@ public enum OperatorKind {
      * Arithmetic operators.
      */
     ADDITION("addition", "+"),
-    SUBSTRATION("substraction", "-"),
+    SUBTRACTION("subtraction", "-"),
     MULTIPLICATION("multiplication", "*"),
     DIVISION("division", "/"),
     EXPONENT("exponent", "^"),

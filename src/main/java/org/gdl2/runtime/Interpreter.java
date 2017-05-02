@@ -537,7 +537,7 @@ public class Interpreter {
             } else {
                 throw new UnsupportedOperationException("Unsupported combination of operator for two periods: " + operator);
             }
-        } else if (operator == ADDITION || operator == SUBSTRATION) {
+        } else if (operator == ADDITION || operator == SUBTRACTION) {
             Period period;
             Long longValue;
             if (rightValue instanceof Period) {
@@ -597,7 +597,7 @@ public class Interpreter {
             switch (operator) {
                 case ADDITION:
                     return left + right;
-                case SUBSTRATION:
+                case SUBTRACTION:
                     return left - right;
                 case MULTIPLICATION:
                     return left * right;
@@ -623,7 +623,7 @@ public class Interpreter {
 
     private boolean isArithmeticOperator(OperatorKind operator) {
         return operator == ADDITION
-                || operator == SUBSTRATION
+                || operator == SUBTRACTION
                 || operator == MULTIPLICATION
                 || operator == DIVISION
                 || operator == EXPONENT

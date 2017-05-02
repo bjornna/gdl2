@@ -512,7 +512,7 @@ ExpressionItem expression_node() :
         }
       | < SYM_MINUS >
         {
-          op = OperatorKind.SUBSTRATION;
+          op = OperatorKind.SUBTRACTION;
         }
       | < SYM_STAR >
         {

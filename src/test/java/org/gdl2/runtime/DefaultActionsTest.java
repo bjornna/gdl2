@@ -1,6 +1,5 @@
 package org.gdl2.runtime;
 
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.model.Guideline;
 import org.hamcrest.Matchers;
@@ -24,8 +23,8 @@ public class DefaultActionsTest extends TestCommon {
     @Test
     public void can_run_default_actions() throws Exception {
         Guideline guideline = loadGuideline("Default_action_test");
-        Map<String, DataValue> result = interpreter.execute(guideline, new ArrayList<>());
-        DataValue dataValue = result.get("gt0013");
+        Map<String, Object> result = interpreter.execute(guideline, new ArrayList<>());
+        Object dataValue = result.get("gt0013");
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getUnits(), is("m2"));

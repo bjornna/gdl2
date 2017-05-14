@@ -3,7 +3,7 @@ package org.gdl2.datatypes;
 import lombok.Value;
 
 @Value
-public final class DvBoolean extends DataValue {
+public final class DvBoolean {
     public static final DvBoolean TRUE = new DvBoolean(true);
     public static final DvBoolean FALSE = new DvBoolean(false);
     private boolean value;

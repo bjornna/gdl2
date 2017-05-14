@@ -1,6 +1,5 @@
 package org.gdl2.runtime;
 
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvCodedText;
 import org.gdl2.expression.ExpressionItem;
 import org.gdl2.model.Guideline;
@@ -17,7 +16,7 @@ public class TerminologyBindingTest extends TestCommon {
     private Interpreter interpreter;
     private ExpressionItem expression;
     private Guideline guide;
-    private HashMap<String, List<DataValue>> inputMap;
+    private HashMap<String, List<Object>> inputMap;
     private Object value;
 
     @BeforeMethod

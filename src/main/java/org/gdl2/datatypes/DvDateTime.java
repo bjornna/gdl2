@@ -5,7 +5,7 @@ import lombok.Value;
 import java.time.LocalDateTime;
 
 @Value
-public final class DvDateTime extends DataValue {
+public final class DvDateTime {
     private LocalDateTime dateTime;
 
     private DvDateTime(LocalDateTime dateTime) {

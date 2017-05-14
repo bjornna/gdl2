@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 public class ExpressionEvaluationTest extends TestCommon {
     private Interpreter interpreter;
     private ExpressionItem expressionItem;
-    private HashMap<String, List<DataValue>> inputMap;
+    private HashMap<String, List<Object>> inputMap;
     private Object value;
 
 
@@ -72,7 +72,7 @@ public class ExpressionEvaluationTest extends TestCommon {
     @Test
     public void can_evaluate_variable_of_last_value_in_the_list() {
         Variable variable = new Variable("gt0001");
-        ArrayList<DataValue> dataValues = new ArrayList<>();
+        ArrayList<Object> dataValues = new ArrayList<>();
         dataValues.add(new DvCount(1));
         dataValues.add(new DvCount(2));
         inputMap.put(variable.getCode(), dataValues);
@@ -331,7 +331,7 @@ public class ExpressionEvaluationTest extends TestCommon {
     @Test
     public void can_evaluate_variable_with_set_currentDateTime_value() {
         Variable variable = Variable.createByCode(Interpreter.CURRENT_DATETIME);
-        HashMap<String, DataValue> systemParameters = new HashMap<>();
+        HashMap<String, Object> systemParameters = new HashMap<>();
         systemParameters.put(Interpreter.CURRENT_DATETIME, DvDateTime.valueOf("2000-01-01T00:00:00"));
         interpreter = new Interpreter(systemParameters);
         value = interpreter.evaluateExpressionItem(variable, inputMap);

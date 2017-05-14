@@ -444,6 +444,7 @@ ExpressionItem expression_node() :
   List<AssignmentExpression> assignmentExpressions = null;
   Token t = null;
   String attrId = null;
+  int position = 1;
 }
 {
   (

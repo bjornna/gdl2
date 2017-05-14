@@ -57,38 +57,6 @@ public class PredicateTest extends TestCommon {
         assertThat(result.get(0).getDvCount("gt0011").getMagnitude(), is(8));
     }
 
-    @Test(enabled = false)
-    public void can_evaluate_predicate_to_get_second_max() throws Exception {
-        String predicateExpression = "/data/events/time/value/value<=(max(/data/events/time))";
-        String path = "/data/events/time";
-        String key = "";
-        ExpressionItem predicate = parseExpression(predicateExpression);
-        List<DataInstance> dataInstanceList = new ArrayList<>();
-        dataInstanceList.add(new DataInstance.Builder()
-                .modelId(archetypeId)
-                .addValue(key, DvCount.valueOf(1))
-                .addValue((path), DvDateTime.valueOf("2010-01-01T00:00:00"))
-                .build());
-        dataInstanceList.add(new DataInstance.Builder()
-                .modelId(archetypeId)
-                .addValue(key, DvCount.valueOf(2))
-                .addValue((path), DvDateTime.valueOf("2012-01-01T00:00:00"))
-                .build());
-        dataInstanceList.add(new DataInstance.Builder()
-                .modelId(archetypeId)
-                .addValue(key, DvCount.valueOf(8))
-                .addValue((path), DvDateTime.valueOf("2015-10-01T00:00:00"))
-                .build());
-        dataInstanceList.add(new DataInstance.Builder()
-                .modelId(archetypeId)
-                .addValue(key, DvCount.valueOf(5))
-                .addValue((path), DvDateTime.valueOf("2013-01-01T00:00:00"))
-                .build());
-        List<DataInstance> result = interpreter.evaluateDataInstancesWithPredicate(dataInstanceList, predicate, null, null);
-        assertThat(result.size(), is(1));
-        assertThat(result.get(0).getDvCount("gt0011").getMagnitude(), is(5));
-    }
-
     @Test
     public void can_evaluate_predicate_with_min_function_expected_one_result() throws Exception {
         // predicates = <"max(/data[at0001]/items[at0004])",...>
@@ -245,7 +213,7 @@ public class PredicateTest extends TestCommon {
                 .modelId("weight")
                 .addValue("/data/events/time", DvDateTime.valueOf("2014-02-15T18:18:00"))
                 .build();
-        Map<String, DataValue> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2015-01-10T00:00:00"));
         interpreter = new Interpreter(parameters);
         BinaryExpression binaryExpression = new BinaryExpression(
@@ -267,7 +235,7 @@ public class PredicateTest extends TestCommon {
                 .modelId("weight")
                 .addValue("/data[at0001]/items[at0003]", DvDateTime.valueOf("2014-02-15T18:18:00"))
                 .build();
-        Map<String, DataValue> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put(CURRENT_DATETIME, DvDateTime.valueOf("2015-01-10T00:00:00"));
         interpreter = new Interpreter(parameters);
         BinaryExpression binaryExpression = new BinaryExpression(

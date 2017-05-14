@@ -3,7 +3,7 @@ package org.gdl2.datatypes;
 import lombok.Value;
 
 @Value
-public final class DvCount extends DataValue {
+public final class DvCount {
     private int magnitude;
 
     public DvCount(int magnitude) {

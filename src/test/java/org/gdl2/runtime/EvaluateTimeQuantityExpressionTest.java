@@ -1,6 +1,5 @@
 package org.gdl2.runtime;
 
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvDateTime;
 import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.expression.ExpressionItem;
@@ -18,9 +17,9 @@ import static org.hamcrest.Matchers.is;
 public class EvaluateTimeQuantityExpressionTest extends TestCommon {
     private ExpressionItem expressionItem;
     private Interpreter interpreter;
-    private Map<String, List<DataValue>> inputMap = new HashMap<>();
+    private Map<String, List<Object>> inputMap = new HashMap<>();
     private Object value;
-    private Map<String, DataValue> systemParameters = new HashMap<>();
+    private Map<String, Object> systemParameters = new HashMap<>();
 
     @BeforeMethod
     public void setUp() {

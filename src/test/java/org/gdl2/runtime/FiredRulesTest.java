@@ -1,6 +1,5 @@
 package org.gdl2.runtime;
 
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvBoolean;
 import org.gdl2.model.Guideline;
 import org.hamcrest.Matchers;
@@ -30,8 +29,8 @@ public class FiredRulesTest extends TestCommon {
         dataInstances.add(toWeight("72.0,kg"));
         dataInstances.add(toHeight("180.0,cm"));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0014");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0014");
         assertThat(dataValue, Matchers.instanceOf(DvBoolean.class));
         DvBoolean dvBoolean = (DvBoolean) dataValue;
         assertThat(dvBoolean.getValue(), is(true));
@@ -44,8 +43,8 @@ public class FiredRulesTest extends TestCommon {
         dataInstances.add(toWeight("158.7,lbs"));
         dataInstances.add(toHeight("5.95,ft"));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0014");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0014");
         assertThat(dataValue, Matchers.instanceOf(DvBoolean.class));
         DvBoolean dvBoolean = (DvBoolean) dataValue;
         assertThat(dvBoolean.getValue(), is(false));

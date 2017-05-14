@@ -10,7 +10,7 @@ import java.text.DecimalFormatSymbols;
 @Value
 @Builder
 @NoArgsConstructor(force = true)
-public final class DvQuantity extends DataValue {
+public final class DvQuantity {
     private static final char DECIMAL_SEPARATOR = '.';
     private String units;
     private double magnitude;

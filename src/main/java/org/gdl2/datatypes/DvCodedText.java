@@ -7,7 +7,7 @@ import lombok.Value;
 @Value
 @Builder
 @NoArgsConstructor(force = true)
-public final class DvCodedText extends DataValue {
+public final class DvCodedText {
     private String value;
     private CodePhrase definingCode;
 

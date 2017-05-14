@@ -27,14 +27,14 @@ public class Interpreter {
     private static final String SUM = "sum";
 
     private static final long HOUR_IN_MILLISECONDS = 3600 * 1000L;
-    private Map<String, DataValue> systemParameters;
+    private Map<String, Object> systemParameters;
 
     public Interpreter() {
         this.systemParameters = new HashMap<>();
         this.systemParameters.put(CURRENT_DATETIME, new DvDateTime());
     }
 
-    public Interpreter(Map<String, DataValue> systemParameters) {
+    public Interpreter(Map<String, Object> systemParameters) {
         this();
         assertNotNull(systemParameters, "systemParameters can not be null");
         this.systemParameters.putAll(systemParameters);
@@ -71,7 +71,7 @@ public class Interpreter {
     }
 
     public List<DataInstance> executeSingleGuideline(Guideline guide, List<DataInstance> dataInstances) {
-        Map<String, DataValue> resultMap = execute(guide, dataInstances);
+        Map<String, Object> resultMap = execute(guide, dataInstances);
         return collectDataInstancesFromValueMap(resultMap, guide.getDefinition());
     }
 
@@ -91,13 +91,13 @@ public class Interpreter {
         return codesFromAssignments;
     }
 
-    Map<String, DataValue> execute(Guideline guide, List<DataInstance> dataInstances) {
+    Map<String, Object> execute(Guideline guide, List<DataInstance> dataInstances) {
         assertNotNull(guide, "Guideline cannot not be null.");
         assertNotNull(dataInstances, "List<DataInstance> cannot be null.");
 
-        Map<String, List<DataValue>> inputValues = selectDataInstancesUsingPredicatesAndSortWithElementBindingCode(
+        Map<String, List<Object>> inputValues = selectDataInstancesUsingPredicatesAndSortWithElementBindingCode(
                 dataInstances, guide);
-        Map<String, DataValue> resultDefaultRuleExecution = new HashMap<>();
+        Map<String, Object> resultDefaultRuleExecution = new HashMap<>();
         Map<String, Class> typeMap = new HashMap<>();
         Set<String> firedRules = new HashSet<>();
         boolean allPreconditionsAreTrue = true;
@@ -116,9 +116,9 @@ public class Interpreter {
         }
         List<Rule> sortedRules = sortRulesByPriority(guide.getDefinition().getRules().values());
 
-        Map<String, List<DataValue>> inputAndResult = new HashMap<>(inputValues);
+        Map<String, List<Object>> inputAndResult = new HashMap<>(inputValues);
         for (Rule rule : sortedRules) {
-            Map<String, DataValue> resultPerRuleExecution = evaluateRuleWithPossibleMultipleValues(
+            Map<String, Object> resultPerRuleExecution = evaluateRuleWithPossibleMultipleValues(
                     rule,
                     inputValues,
                     inputAndResult,
@@ -129,18 +129,18 @@ public class Interpreter {
         return collectValueListMap(inputAndResult);
     }
 
-    private Map<String, DataValue> collectValueListMap(Map<String, List<DataValue>> valueListMap) {
+    private Map<String, Object> collectValueListMap(Map<String, List<Object>> valueListMap) {
         return valueListMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, s -> s.getValue().get(s.getValue().size() - 1)));
     }
 
-    void mergeValueMapIntoListValueMap(Map<String, DataValue> valueMap, Map<String, List<DataValue>> valueListMap) {
-        for (Map.Entry<String, DataValue> entry : valueMap.entrySet()) {
+    void mergeValueMapIntoListValueMap(Map<String, Object> valueMap, Map<String, List<Object>> valueListMap) {
+        for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
             valueListMap.computeIfAbsent(entry.getKey(), s -> new ArrayList<>()).add(entry.getValue());
         }
     }
 
-    private List<DataInstance> collectDataInstancesFromValueMap(Map<String, DataValue> valueMap, GuideDefinition guideDefinition) {
+    private List<DataInstance> collectDataInstancesFromValueMap(Map<String, Object> valueMap, GuideDefinition guideDefinition) {
         List<DataInstance> dataInstances = new ArrayList<>();
         Set<String> assignableCodes = getCodesForAssignableVariables(guideDefinition);
         for (DataBinding dataBinding : guideDefinition.getDataBindings().values()) {
@@ -151,7 +151,7 @@ public class Interpreter {
             for (Map.Entry<String, Element> elementBindingEntry : dataBinding.getElements().entrySet()) {
                 String elementId = elementBindingEntry.getValue().getId();
                 String elementPath = elementBindingEntry.getValue().getPath();
-                for (Map.Entry<String, DataValue> entry : valueMap.entrySet()) {
+                for (Map.Entry<String, Object> entry : valueMap.entrySet()) {
                     String valueKey = entry.getKey();
                     if (assignableCodes.contains(valueKey) && elementId.equals(valueKey)) {
                         dataInstance.setValue(elementPath, entry.getValue());
@@ -165,9 +165,9 @@ public class Interpreter {
         return dataInstances;
     }
 
-    private Map<String, List<DataValue>> selectDataInstancesUsingPredicatesAndSortWithElementBindingCode(
+    private Map<String, List<Object>> selectDataInstancesUsingPredicatesAndSortWithElementBindingCode(
             List<DataInstance> dataInstances, Guideline guide) {
-        Map<String, List<DataValue>> valueListMap = new HashMap<>();
+        Map<String, List<Object>> valueListMap = new HashMap<>();
         for (Map.Entry<String, DataBinding> entry : guide.getDefinition().getDataBindings().entrySet()) {
             DataBinding archetypeBinding = entry.getValue();
             List<DataInstance> selectedDataInstances =
@@ -182,7 +182,7 @@ public class Interpreter {
 
     private void convertDataInstancesToCodeBasedValueMap(DataBinding archetypeBinding,
                                                          List<DataInstance> dataInstances,
-                                                         Map<String, List<DataValue>> valueListMap) {
+                                                         Map<String, List<Object>> valueListMap) {
         Map<String, String> pathToCode = pathToCode(archetypeBinding);
         dataInstances.stream()
                 .flatMap(s -> s.values().entrySet().stream())
@@ -202,27 +202,27 @@ public class Interpreter {
         return rules.stream().sorted(new RuleComparator()).collect(Collectors.toList());
     }
 
-    private Map<String, DataValue> evaluateRuleWithPossibleMultipleValues(Rule rule, Map<String, List<DataValue>> originalInput,
-                                                                          Map<String, List<DataValue>> inputAndResult,
+    private Map<String, Object> evaluateRuleWithPossibleMultipleValues(Rule rule, Map<String, List<Object>> originalInput,
+                                                                          Map<String, List<Object>> inputAndResult,
                                                                           GuideOntology guideOntology, Set<String> firedRules) {
-        for (Map.Entry<String, List<DataValue>> entry : originalInput.entrySet()) {
-            List<DataValue> list = entry.getValue();
-            List<DataValue> listForLoop = new ArrayList<>(list);
+        for (Map.Entry<String, List<Object>> entry : originalInput.entrySet()) {
+            List<Object> list = entry.getValue();
+            List<Object> listForLoop = new ArrayList<>(list);
             if (list.size() == 1) {
                 continue;
             }
-            for (DataValue dataValue : listForLoop) {
+            for (Object dataValue : listForLoop) {
                 entry.setValue(Collections.singletonList(dataValue));
-                Map<String, DataValue> result = evaluateRuleWithPossibleMultipleValues(rule, originalInput, inputAndResult, guideOntology, firedRules);
+                Map<String, Object> result = evaluateRuleWithPossibleMultipleValues(rule, originalInput, inputAndResult, guideOntology, firedRules);
                 mergeValueMapIntoListValueMap(result, inputAndResult);
             }
         }
         return evaluateRuleWithSingleValueForEachInputVariable(rule, inputAndResult, guideOntology, firedRules);
     }
 
-    private Map<String, DataValue> evaluateRuleWithSingleValueForEachInputVariable(Rule rule, Map<String, List<DataValue>> input,
+    private Map<String, Object> evaluateRuleWithSingleValueForEachInputVariable(Rule rule, Map<String, List<Object>> input,
                                                                                    GuideOntology guideOntology, Set<String> firedRules) {
-        Map<String, DataValue> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         boolean allWhenStatementsAreTrue = rule.getWhen() == null || rule.getWhen().stream()
                 .allMatch(whenStatement -> evaluateBooleanExpression(whenStatement, input, guideOntology, firedRules));
         if (!allWhenStatementsAreTrue) {
@@ -252,8 +252,8 @@ public class Interpreter {
                 .collect(Collectors.toMap(Map.Entry::getKey, s -> typeBinding.possibleType(s.getValue())));
     }
 
-    void performAssignmentStatements(AssignmentExpression assignmentExpression, Map<String, List<DataValue>> input,
-                                     Map<String, Class> typeMap, Map<String, DataValue> result) {
+    void performAssignmentStatements(AssignmentExpression assignmentExpression, Map<String, List<Object>> input,
+                                     Map<String, Class> typeMap, Map<String, Object> result) {
         Variable variable = assignmentExpression.getVariable();
         String attribute = variable.getAttribute();
         if (assignmentExpression instanceof CreateInstanceExpression) {
@@ -298,18 +298,18 @@ public class Interpreter {
             result.put(variable.getCode(), DvText.valueOf((String) value));
         } else if ("true".equalsIgnoreCase(value.toString()) || "false".equalsIgnoreCase(value.toString())) {
             result.put(variable.getCode(), DvBoolean.valueOf(value.toString()));
-        } else if (value instanceof DataValue) {
-            result.put(assignmentExpression.getVariable().getCode(), (DataValue) value);
+        } else if (value instanceof Object) {
+            result.put(assignmentExpression.getVariable().getCode(), (Object) value);
         } else {
             throw new UnsupportedOperationException("failed to perform assignmentExpression: " + assignmentExpression);
         }
     }
 
     private void performAssignMagnitudeAttribute(Object value, Variable variable, AssignmentExpression assignmentExpression,
-                                                 Map<String, List<DataValue>> input, Map<String, Class> typeMap, Map<String, DataValue> result) {
+                                                 Map<String, List<Object>> input, Map<String, Class> typeMap, Map<String, Object> result) {
         Class type = typeMap.get(variable.getCode());
         DvQuantity dvQuantity = null;
-        List<DataValue> valueList = input.get(variable.getCode());
+        List<Object> valueList = input.get(variable.getCode());
         if (valueList != null && !valueList.isEmpty() && (valueList.get(valueList.size() - 1) instanceof DvQuantity)) {
             dvQuantity = (DvQuantity) valueList.get(valueList.size() - 1);
         }
@@ -350,8 +350,8 @@ public class Interpreter {
         }
     }
 
-    private void evaluateCreateInstanceExpression(AssignmentExpression assignmentExpression, Map<String, List<DataValue>> input,
-                                                  Map<String, Class> typeMap, Map<String, DataValue> result) {
+    private void evaluateCreateInstanceExpression(AssignmentExpression assignmentExpression, Map<String, List<Object>> input,
+                                                  Map<String, Class> typeMap, Map<String, Object> result) {
         CreateInstanceExpression createInstanceExpression = (CreateInstanceExpression) assignmentExpression;
         List<AssignmentExpression> assignmentExpressions = createInstanceExpression.getAssignmentExpressions();
         for (AssignmentExpression expression : assignmentExpressions) {
@@ -361,19 +361,19 @@ public class Interpreter {
         result.putAll(result);
     }
 
-    private DvQuantity retrieveDvQuantityFromResultMapOrCreateNew(String code, Map<String, DataValue> resultMap) {
-        DataValue dataValue = resultMap.computeIfAbsent(code, k -> new DvQuantity(0));
+    private DvQuantity retrieveDvQuantityFromResultMapOrCreateNew(String code, Map<String, Object> resultMap) {
+        Object dataValue = resultMap.computeIfAbsent(code, k -> new DvQuantity(0));
         if (!(dataValue instanceof DvQuantity)) {
             throw new IllegalArgumentException("Expected DvQuantity but instead got: " + resultMap.get(code).getClass());
         }
         return (DvQuantity) dataValue;
     }
 
-    Object evaluateExpressionItem(ExpressionItem expressionItem, Map<String, List<DataValue>> input) {
+    Object evaluateExpressionItem(ExpressionItem expressionItem, Map<String, List<Object>> input) {
         return evaluateExpressionItem(expressionItem, input, null, null);
     }
 
-    Object evaluateExpressionItem(ExpressionItem expressionItem, Map<String, List<DataValue>> input,
+    Object evaluateExpressionItem(ExpressionItem expressionItem, Map<String, List<Object>> input,
                                   GuideOntology guideOntology, Set<String> firedRules) {
         if (expressionItem instanceof ConstantExpression) {
             return evaluateConstantExpression(expressionItem);
@@ -438,14 +438,14 @@ public class Interpreter {
         throw new UnsupportedOperationException("Unsupported time period unit: " + dvQuantity.getUnits());
     }
 
-    private boolean evaluateBooleanExpression(ExpressionItem whenStatement, Map<String, List<DataValue>> input,
+    private boolean evaluateBooleanExpression(ExpressionItem whenStatement, Map<String, List<Object>> input,
                                               GuideOntology guideOntology, Set<String> firedRules) {
         Object value = evaluateExpressionItem(whenStatement, input, guideOntology, firedRules);
         return value instanceof Boolean && ((Boolean) value);
     }
 
     private Object processFunctionalExpression(FunctionalExpression functionalExpression, Map<String,
-            List<DataValue>> input, GuideOntology ontology, Set<String> firedRules) {
+            List<Object>> input, GuideOntology ontology, Set<String> firedRules) {
         String function = functionalExpression.getFunction().toString();
         Double value = Double.valueOf(evaluateExpressionItem(functionalExpression.getItems().get(0), input, ontology, firedRules).toString());
         if ("abs".equalsIgnoreCase(function)) {
@@ -481,7 +481,7 @@ public class Interpreter {
         }
     }
 
-    private Object processBinaryExpression(ExpressionItem expressionItem, Map<String, List<DataValue>> input,
+    private Object processBinaryExpression(ExpressionItem expressionItem, Map<String, List<Object>> input,
                                            GuideOntology ontology, Set<String> firedRules) {
         BinaryExpression binaryExpression = (BinaryExpression) expressionItem;
         OperatorKind operator = binaryExpression.getOperator();
@@ -672,28 +672,28 @@ public class Interpreter {
                 .anyMatch(bindingCode -> codedTextDefiningCode.getCode().startsWith(bindingCode));
     }
 
-    private Object evaluateAggregationSum(Variable variable, Map<String, List<DataValue>> valueMap) {
+    private Object evaluateAggregationSum(Variable variable, Map<String, List<Object>> valueMap) {
         String key = variable.getCode();
-        List<DataValue> valueList = valueMap.get(key);
+        List<Object> valueList = valueMap.get(key);
         if (valueList == null || valueList.isEmpty()) {
             return 0;
         }
-        DataValue first = valueList.get(0);
+        Object first = valueList.get(0);
         if (first instanceof DvCount) {
             int sum = 0;
-            for (DataValue dataValue : valueList) {
+            for (Object dataValue : valueList) {
                 sum += ((DvCount) dataValue).getMagnitude();
             }
             return sum;
         } else if (first instanceof DvQuantity) {
             double sum = 0;
-            for (DataValue dataValue : valueList) {
+            for (Object dataValue : valueList) {
                 sum += ((DvQuantity) dataValue).getMagnitude();
             }
             return sum;
         } else if (first instanceof DvOrdinal) {
             int sum = 0;
-            for (DataValue dataValue : valueList) {
+            for (Object dataValue : valueList) {
                 sum += ((DvOrdinal) dataValue).getValue();
             }
             return sum;
@@ -702,7 +702,7 @@ public class Interpreter {
         }
     }
 
-    private Object retrieveValueFromValueMap(Variable variable, Map<String, List<DataValue>> valueMap) {
+    private Object retrieveValueFromValueMap(Variable variable, Map<String, List<Object>> valueMap) {
         String key = variable.getCode() != null ? variable.getCode() : variable.getPath();
 
         if (COUNT.equals(variable.getAttribute())) {
@@ -713,11 +713,11 @@ public class Interpreter {
         if (key.endsWith("/value/value")) {
             key = key.substring(0, key.length() - 12);
         }
-        DataValue dataValue;
+        Object dataValue;
         if (CURRENT_DATETIME.equals(variable.getCode())) {
             dataValue = systemParameters.get(CURRENT_DATETIME);
         } else {
-            List<DataValue> valueList = valueMap.get(key);
+            List<Object> valueList = valueMap.get(key);
             if (valueList == null) {
                 return TypeBinding.MAGNITUDE.equals(variable.getAttribute()) ? 0.0 : null; // backwards compatibility
             }

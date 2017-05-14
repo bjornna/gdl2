@@ -1,7 +1,6 @@
 package org.gdl2.runtime;
 
 import org.gdl2.datatypes.CodePhrase;
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvCodedText;
 import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.expression.AssignmentExpression;
@@ -24,9 +23,9 @@ import static org.hamcrest.Matchers.is;
 
 public class CreateStatementTest extends TestCommon {
     private Interpreter interpreter;
-    private HashMap<String, List<DataValue>> inputMap;
-    private HashMap<String, DataValue> resultMap;
-    private DataValue dataValue;
+    private HashMap<String, List<Object>> inputMap;
+    private HashMap<String, Object> resultMap;
+    private Object dataValue;
 
     @BeforeMethod
     public void setUp() {

@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class DataInstance {
     private String modelId;
-    private Map<String, DataValue> values; // values indexed by path
+    private Map<String, Object> values; // values indexed by path
 
     private DataInstance() {
         this.values = new HashMap<>();
@@ -38,12 +38,12 @@ public class DataInstance {
         return this.values.containsKey(key);
     }
 
-    public DataValue get(String key) {
+    public Object get(String key) {
         assertNotNull(key, "Null key");
         return this.values.get(key);
     }
 
-    public Map<String, DataValue> values() {
+    public Map<String, Object> values() {
         return Collections.unmodifiableMap(this.values);
     }
 
@@ -61,10 +61,10 @@ public class DataInstance {
         return this.values.size();
     }
 
-    public Map<String, List<DataValue>> valueListMap() {
-        Map<String, List<DataValue>> result = new HashMap<>();
-        for (Map.Entry<String, DataValue> entry : this.values.entrySet()) {
-            List<DataValue> list = new ArrayList<>();
+    public Map<String, List<Object>> valueListMap() {
+        Map<String, List<Object>> result = new HashMap<>();
+        for (Map.Entry<String, Object> entry : this.values.entrySet()) {
+            List<Object> list = new ArrayList<>();
             list.add(entry.getValue());
             result.put(entry.getKey(), list);
         }
@@ -112,7 +112,7 @@ public class DataInstance {
      * @param key       not null
      * @param dataValue null value if ignored
      */
-    public void setValue(String key, DataValue dataValue) {
+    public void setValue(String key, Object dataValue) {
         assertNotNull(key, "Null key");
         assertNotNull(dataValue, "Null dataValue");
         this.values.put(key, dataValue);
@@ -142,7 +142,7 @@ public class DataInstance {
          * @param key       not null
          * @param dataValue ignored if null value
          */
-        public Builder addValue(String key, DataValue dataValue) {
+        public Builder addValue(String key, Object dataValue) {
             assertNotNull(key, "Null key");
             if (dataValue != null) {
                 dataInstance.values.put(key, dataValue);

@@ -2,7 +2,6 @@ package org.gdl2.runtime;
 
 import org.apache.commons.io.IOUtils;
 import org.gdl2.Gdl2;
-import org.gdl2.datatypes.DataValue;
 import org.gdl2.datatypes.DvDateTime;
 import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.expression.AssignmentExpression;
@@ -61,8 +60,8 @@ public class TestCommon {
         return IOUtils.toString(this.getClass().getClassLoader().getResourceAsStream((name + ".json")), "UTF-8");
     }
 
-    List<DataValue> asList(DataValue dataValue) {
-        List<DataValue> list = new ArrayList<>();
+    List<Object> asList(Object dataValue) {
+        List<Object> list = new ArrayList<>();
         list.add(dataValue);
         return list;
     }

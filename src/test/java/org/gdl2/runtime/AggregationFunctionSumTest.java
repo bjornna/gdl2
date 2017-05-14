@@ -29,8 +29,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withQuantity(80.0));
         dataInstances.add(withQuantity(50.0));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvText.class));
         DvText dvText = (DvText) dataValue;
         assertThat(dvText.getValue(), is("Overdose"));
@@ -43,8 +43,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withCount(50));
         dataInstances.add(withCount(60));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvText.class));
         DvText dvText = (DvText) dataValue;
         assertThat(dvText.getValue(), is("Overdose"));
@@ -57,8 +57,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withOrdinal(50));
         dataInstances.add(withOrdinal(60));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvText.class));
         DvText dvText = (DvText) dataValue;
         assertThat(dvText.getValue(), is("Overdose"));
@@ -71,8 +71,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withQuantity(80.0));
         dataInstances.add(withQuantity(50.0));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getMagnitude(), is(130.0));
@@ -86,8 +86,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withCount(40));
         dataInstances.add(withCount(5));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvCount.class));
         DvCount dvCount = (DvCount) dataValue;
         assertThat(dvCount.getMagnitude(), is(55));
@@ -102,8 +102,8 @@ public class AggregationFunctionSumTest extends TestCommon {
         dataInstances.add(withOrdinal(3));
         dataInstances.add(withOrdinal(4));
 
-        Map<String, DataValue> result = interpreter.execute(guideline, dataInstances);
-        DataValue dataValue = result.get("gt0007");
+        Map<String, Object> result = interpreter.execute(guideline, dataInstances);
+        Object dataValue = result.get("gt0007");
         assertThat(dataValue, Matchers.instanceOf(DvCount.class));
         DvCount dvCount = (DvCount) dataValue;
         assertThat(dvCount.getMagnitude(), is(10));

@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public final class DvOrdinal extends DataValue {
+public final class DvOrdinal {
     private int value;
     private DvCodedText symbol;
 

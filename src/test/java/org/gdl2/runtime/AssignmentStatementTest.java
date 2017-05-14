@@ -23,10 +23,10 @@ import static org.hamcrest.Matchers.is;
  */
 public class AssignmentStatementTest extends TestCommon {
     private Interpreter interpreter;
-    private HashMap<String, List<DataValue>> inputMap;
-    private HashMap<String, DataValue> resultMap;
-    private DataValue dataValue;
-    private Map<String, DataValue> systemParameters = new HashMap<>();
+    private HashMap<String, List<Object>> inputMap;
+    private HashMap<String, Object> resultMap;
+    private Object dataValue;
+    private Map<String, Object> systemParameters = new HashMap<>();
 
     @BeforeMethod
     public void setUp() {
@@ -46,7 +46,7 @@ public class AssignmentStatementTest extends TestCommon {
         typeMap.put("gt0013", DvQuantity.class);
         interpreter.performAssignmentStatements(assignmentExpression, inputMap, typeMap, resultMap);
         assertThat(resultMap.size(), is(1));
-        DataValue dataValue = resultMap.get("gt0013");
+        Object dataValue = resultMap.get("gt0013");
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getMagnitude(), closeTo(1.90, 0.1));
@@ -55,8 +55,8 @@ public class AssignmentStatementTest extends TestCommon {
     @Test
     public void can_assign_dv_quantity_with_string_value() throws Exception {
         Guideline guideline = loadGuideline("Set_dv_quantity_value_test.v1.gdl2");
-        Map<String, DataValue> result = interpreter.execute(guideline, new ArrayList<>());
-        DataValue dataValue = result.get("gt0013");
+        Map<String, Object> result = interpreter.execute(guideline, new ArrayList<>());
+        Object dataValue = result.get("gt0013");
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getMagnitude(), closeTo(4.5, 0.01));
@@ -74,7 +74,7 @@ public class AssignmentStatementTest extends TestCommon {
         inputMap.put(second.getCode(), asList(new DvOrdinal(2, "two", "terminology", "code")));
         interpreter.performAssignmentStatements(assignmentExpression, inputMap, new HashMap<>(), resultMap);
         assertThat(resultMap.size(), is(1));
-        DataValue dataValue = resultMap.get(resultVariable.getCode());
+        Object dataValue = resultMap.get(resultVariable.getCode());
         assertThat(dataValue, Matchers.instanceOf(DvCount.class));
         assertThat(((DvCount) dataValue).getMagnitude(), is(3));
     }
@@ -92,7 +92,7 @@ public class AssignmentStatementTest extends TestCommon {
         inputMap.put("gt0015", asList(new DvOrdinal(1, "one", "terminology", "code")));
         interpreter.performAssignmentStatements(assignmentExpression, inputMap, new HashMap<>(), resultMap);
         assertThat(resultMap.size(), is(1));
-        DataValue dataValue = resultMap.get("gt0016");
+        Object dataValue = resultMap.get("gt0016");
         assertThat(dataValue, Matchers.instanceOf(DvCount.class));
         assertThat(((DvCount) dataValue).getMagnitude(), is(3));
     }
@@ -105,7 +105,7 @@ public class AssignmentStatementTest extends TestCommon {
         AssignmentExpression assignmentExpression = new AssignmentExpression(variable, quantityConstant);
         interpreter.performAssignmentStatements(assignmentExpression, inputMap, new HashMap<>(), resultMap);
         assertThat(resultMap.size(), is(1));
-        DataValue dataValue = resultMap.get(variable.getCode());
+        Object dataValue = resultMap.get(variable.getCode());
         assertThat(dataValue, Matchers.instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) dataValue;
         assertThat(dvQuantity.getMagnitude(), is(0.0));

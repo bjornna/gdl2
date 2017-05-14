@@ -3,7 +3,7 @@ package org.gdl2.datatypes;
 import lombok.Value;
 
 @Value
-public final class DvText extends DataValue {
+public final class DvText {
     private String value;
 
     public DvText(String value) {

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.gdl2</groupId>
     <artifactId>gdl2</artifactId>
-    <version>0.3.21-SNAPSHOT</version>
+    <version>0.3.21</version>
     <name>GDL2</name>
     <description>Guideline Definition Language v2 reference java implementation</description>
     <properties>
@@ -43,7 +43,7 @@
     <scm>
         <connection>scm:git:https://github.com/gdl-lang/gdl2.git</connection>
         <developerConnection>scm:git:https://github.com/gdl-lang/gdl2.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>gdl2-0.3.21</tag>
     </scm>
 
     <build>

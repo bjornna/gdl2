@@ -1,5 +1,6 @@
 package org.gdl2.runtime;
 
+import com.google.gson.Gson;
 import lombok.NonNull;
 import org.gdl2.datatypes.*;
 import org.gdl2.expression.*;
@@ -79,6 +80,7 @@ public class Interpreter {
         Set<String> codesFromAssignments = guideDefinition.getRules().entrySet().stream()
                 .flatMap(entry -> entry.getValue().getThen().stream())
                 .filter(s -> !(s instanceof CreateInstanceExpression))
+                .filter(s -> !(s instanceof UseTemplateExpression))
                 .map(assignmentExpression -> ((AssignmentExpression) assignmentExpression).getVariable().getCode())
                 .collect(Collectors.toSet());
         Set<String> codesFromCreateStatements = guideDefinition.getRules().entrySet().stream()
@@ -122,6 +124,7 @@ public class Interpreter {
                     rule,
                     inputValues,
                     inputAndResult,
+                    guide.getDefinition().getTemplates(),
                     guide.getOntology(),
                     firedRules);
             mergeValueMapIntoListValueMap(resultPerRuleExecution, inputAndResult);
@@ -160,6 +163,17 @@ public class Interpreter {
             }
             if (dataInstance.values().size() != 0) {
                 dataInstances.add(dataInstance);
+            }
+        }
+        if (guideDefinition.getTemplates() != null) {
+            for (Map.Entry<String, Template> entry : guideDefinition.getTemplates().entrySet()) {
+                Template template = entry.getValue();
+                if (valueMap.containsKey(template.getId())) {
+                    dataInstances.add(new DataInstance.Builder()
+                            .modelId(template.getModelId())
+                            .addValue("/", valueMap.get(template.getId()))
+                            .build());
+                }
             }
         }
         return dataInstances;
@@ -203,8 +217,9 @@ public class Interpreter {
     }
 
     private Map<String, Object> evaluateRuleWithPossibleMultipleValues(Rule rule, Map<String, List<Object>> originalInput,
-                                                                          Map<String, List<Object>> inputAndResult,
-                                                                          GuideOntology guideOntology, Set<String> firedRules) {
+                                                                       Map<String, List<Object>> inputAndResult,
+                                                                       Map<String, Template> templateMap,
+                                                                       GuideOntology guideOntology, Set<String> firedRules) {
         for (Map.Entry<String, List<Object>> entry : originalInput.entrySet()) {
             List<Object> list = entry.getValue();
             List<Object> listForLoop = new ArrayList<>(list);
@@ -213,15 +228,17 @@ public class Interpreter {
             }
             for (Object dataValue : listForLoop) {
                 entry.setValue(Collections.singletonList(dataValue));
-                Map<String, Object> result = evaluateRuleWithPossibleMultipleValues(rule, originalInput, inputAndResult, guideOntology, firedRules);
+                Map<String, Object> result = evaluateRuleWithPossibleMultipleValues(rule, originalInput, inputAndResult,
+                        templateMap, guideOntology, firedRules);
                 mergeValueMapIntoListValueMap(result, inputAndResult);
             }
         }
-        return evaluateRuleWithSingleValueForEachInputVariable(rule, inputAndResult, guideOntology, firedRules);
+        return evaluateRuleWithSingleValueForEachInputVariable(rule, inputAndResult, templateMap, guideOntology, firedRules);
     }
 
     private Map<String, Object> evaluateRuleWithSingleValueForEachInputVariable(Rule rule, Map<String, List<Object>> input,
-                                                                                   GuideOntology guideOntology, Set<String> firedRules) {
+                                                                                Map<String, Template> templateMap,
+                                                                                GuideOntology guideOntology, Set<String> firedRules) {
         Map<String, Object> result = new HashMap<>();
         boolean allWhenStatementsAreTrue = rule.getWhen() == null || rule.getWhen().stream()
                 .allMatch(whenStatement -> evaluateBooleanExpression(whenStatement, input, guideOntology, firedRules));
@@ -230,7 +247,11 @@ public class Interpreter {
         }
         Map<String, Class> typeMap = typeBindingThroughAssignmentStatements(rule.getThen());
         for (ExpressionItem thenStatement : rule.getThen()) {
-            performAssignmentStatements((AssignmentExpression) thenStatement, input, typeMap, result);
+            if (thenStatement instanceof AssignmentExpression) {
+                performAssignmentStatements((AssignmentExpression) thenStatement, input, typeMap, result);
+            } else if (thenStatement instanceof UseTemplateExpression) {
+                performUseTemplateStatement((UseTemplateExpression) thenStatement, templateMap, result);
+            }
             mergeValueMapIntoListValueMap(result, input);
         }
         firedRules.add(rule.getId());
@@ -240,11 +261,13 @@ public class Interpreter {
     // mainly to resolve ambiguity between DvCount and DvQuantity
     Map<String, Class> typeBindingThroughAssignmentStatements(List<ExpressionItem> assignmentExpressions) {
         Map<String, Set<String>> attributesMap = new HashMap<>();
-        for (ExpressionItem assignmentExpression : assignmentExpressions) {
-            Variable variable = ((AssignmentExpression) assignmentExpression).getVariable();
-            attributesMap
-                    .computeIfAbsent(variable.getCode(), key -> new HashSet<>())
-                    .add(variable.getAttribute());
+        for (ExpressionItem expressionItem : assignmentExpressions) {
+            if (expressionItem instanceof AssignmentExpression) {
+                Variable variable = ((AssignmentExpression) expressionItem).getVariable();
+                attributesMap
+                        .computeIfAbsent(variable.getCode(), key -> new HashSet<>())
+                        .add(variable.getAttribute());
+            }
         }
 
         TypeBinding typeBinding = new TypeBinding();
@@ -302,6 +325,26 @@ public class Interpreter {
             result.put(assignmentExpression.getVariable().getCode(), (Object) value);
         } else {
             throw new UnsupportedOperationException("failed to perform assignmentExpression: " + assignmentExpression);
+        }
+    }
+
+    void performUseTemplateStatement(UseTemplateExpression useTemplateExpression, Map<String, Template> templateMap, Map<String, Object> result) {
+        Variable variable = useTemplateExpression.getVariable();
+        String attribute = variable.getCode();
+        Template template = templateMap.get(attribute);
+        if (template != null) {
+            try {
+
+                Map<String, Object> map = template.getObject();
+                Gson gson = new Gson();
+                String json = gson.toJson(map);
+                Class modelClass = Class.forName(template.getModelId());
+                Object object = gson.fromJson(json, modelClass);
+                result.put(variable.getCode(), object);
+            } catch (ClassNotFoundException cnf) {
+                System.out.println("failed to create object using template(" + template.getModelId() + "), class not found..");
+                cnf.printStackTrace();
+            }
         }
     }
 

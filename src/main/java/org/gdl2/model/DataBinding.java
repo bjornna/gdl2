@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 @Value
-public final class DataBinding {
+public class DataBinding {
     private String id;
     private Type type;
     private String modelId;

@@ -9,6 +9,7 @@ import java.util.Map;
 @Value
 public final class GuideDefinition {
     private Map<String, DataBinding> dataBindings;
+    private Map<String, Template> templates;
     private List<ExpressionItem> preConditions;
     private List<ExpressionItem> defaultActions;
     private Map<String, Rule> rules;

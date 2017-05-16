@@ -23,6 +23,9 @@ public class GuideDefinitionSerializer implements JsonSerializer<GuideDefinition
         if (!src.getDataBindings().isEmpty()) {
             object.add("data_bindings", context.serialize(src.getDataBindings()));
         }
+        if (src.getTemplates() != null && !src.getTemplates().isEmpty()) {
+            object.add("templates", context.serialize(src.getTemplates()));
+        }
         if (!src.getRules().isEmpty()) {
             object.add("rules", context.serialize(src.getRules()));
         }

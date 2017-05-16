@@ -127,6 +127,7 @@ TOKEN : /* SYMBOLS - common */
 | < SYM_DIV : "//" >
 | < SYM_ELLIPSIS : ".." >
 | < SYM_LIST_CONTINUE : "..." >
+| < SYM_USE_TEMPLATE: "use_template">
 }
 
 <* >
@@ -445,6 +446,7 @@ ExpressionItem expression_node() :
   Token t = null;
   String attrId = null;
   int position = 1;
+  Variable variable = null;
 }
 {
   (
@@ -468,6 +470,10 @@ ExpressionItem expression_node() :
     | t = < SYM_MATH_FUNCTION > < SYM_L_PARENTHESIS > item = expression_leaf() < SYM_R_PARENTHESIS >
       {
         return FunctionalExpression.create(new Function(t.image), item);
+      }
+    | t = < SYM_USE_TEMPLATE > < SYM_L_PARENTHESIS > variable = variable() < SYM_R_PARENTHESIS >
+      {
+        return new UseTemplateExpression(variable);
       }
     |
       LOOKAHEAD(2)

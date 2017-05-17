@@ -1,6 +1,5 @@
 package org.gdl2.runtime;
 
-import com.google.gson.Gson;
 import lombok.NonNull;
 import org.gdl2.datatypes.*;
 import org.gdl2.expression.*;
@@ -24,21 +23,30 @@ import static org.gdl2.expression.OperatorKind.*;
  */
 public class Interpreter {
     public static final String CURRENT_DATETIME = "currentDateTime";
+    public static final String OBJECT_CREATOR = "objectCreator";
     private static final String COUNT = "count";
     private static final String SUM = "sum";
 
     private static final long HOUR_IN_MILLISECONDS = 3600 * 1000L;
     private Map<String, Object> systemParameters;
+    private ObjectCreatorPlugin objectCreatorPlugin;
 
     public Interpreter() {
         this.systemParameters = new HashMap<>();
         this.systemParameters.put(CURRENT_DATETIME, new DvDateTime());
+        this.objectCreatorPlugin = new DefaultObjectCreator();
     }
 
     public Interpreter(Map<String, Object> systemParameters) {
         this();
         assertNotNull(systemParameters, "systemParameters can not be null");
         this.systemParameters.putAll(systemParameters);
+        Object objectCreator = systemParameters.get(OBJECT_CREATOR);
+        if (objectCreator instanceof ObjectCreatorPlugin) {
+            this.objectCreatorPlugin = (ObjectCreatorPlugin) systemParameters.get(OBJECT_CREATOR);
+        } else {
+            this.objectCreatorPlugin = new DefaultObjectCreator();
+        }
     }
 
     private static void assertNotNull(Object object, String message) {
@@ -183,21 +191,21 @@ public class Interpreter {
             List<DataInstance> dataInstances, Guideline guide) {
         Map<String, List<Object>> valueListMap = new HashMap<>();
         for (Map.Entry<String, DataBinding> entry : guide.getDefinition().getDataBindings().entrySet()) {
-            DataBinding archetypeBinding = entry.getValue();
+            DataBinding dataBinding = entry.getValue();
             List<DataInstance> selectedDataInstances =
                     evaluateDataInstancesWithPredicate(
-                            filterDataInstancesWithArchetypeId(dataInstances, archetypeBinding.getModelId()),
-                            archetypeBinding.getPredicates(),
+                            filterDataInstancesWithModelId(dataInstances, dataBinding.getModelId()),
+                            dataBinding.getPredicates(),
                             guide.getOntology());
-            convertDataInstancesToCodeBasedValueMap(archetypeBinding, selectedDataInstances, valueListMap);
+            convertDataInstancesToCodeBasedValueMap(dataBinding, selectedDataInstances, valueListMap);
         }
         return valueListMap;
     }
 
-    private void convertDataInstancesToCodeBasedValueMap(DataBinding archetypeBinding,
+    private void convertDataInstancesToCodeBasedValueMap(DataBinding dataBinding,
                                                          List<DataInstance> dataInstances,
                                                          Map<String, List<Object>> valueListMap) {
-        Map<String, String> pathToCode = pathToCode(archetypeBinding);
+        Map<String, String> pathToCode = pathToCode(dataBinding);
         dataInstances.stream()
                 .flatMap(s -> s.values().entrySet().stream())
                 .filter(s -> pathToCode.containsKey(s.getKey()))
@@ -206,8 +214,8 @@ public class Interpreter {
                         .add(s.getValue()));
     }
 
-    private Map<String, String> pathToCode(DataBinding archetypeBinding) {
-        return archetypeBinding.getElements().entrySet().stream()
+    private Map<String, String> pathToCode(DataBinding dataBinding) {
+        return dataBinding.getElements().entrySet().stream()
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toMap(Element::getPath, Element::getId));
     }
@@ -321,10 +329,8 @@ public class Interpreter {
             result.put(variable.getCode(), DvText.valueOf((String) value));
         } else if ("true".equalsIgnoreCase(value.toString()) || "false".equalsIgnoreCase(value.toString())) {
             result.put(variable.getCode(), DvBoolean.valueOf(value.toString()));
-        } else if (value instanceof Object) {
-            result.put(assignmentExpression.getVariable().getCode(), (Object) value);
         } else {
-            throw new UnsupportedOperationException("failed to perform assignmentExpression: " + assignmentExpression);
+            result.put(assignmentExpression.getVariable().getCode(), value);
         }
     }
 
@@ -334,12 +340,7 @@ public class Interpreter {
         Template template = templateMap.get(attribute);
         if (template != null) {
             try {
-
-                Map<String, Object> map = template.getObject();
-                Gson gson = new Gson();
-                String json = gson.toJson(map);
-                Class modelClass = Class.forName(template.getModelId());
-                Object object = gson.fromJson(json, modelClass);
+                Object object = this.objectCreatorPlugin.create(template.getModelId(), template.getObject());
                 result.put(variable.getCode(), object);
             } catch (ClassNotFoundException cnf) {
                 System.out.println("failed to create object using template(" + template.getModelId() + "), class not found..");
@@ -788,9 +789,9 @@ public class Interpreter {
         }
     }
 
-    private List<DataInstance> filterDataInstancesWithArchetypeId(List<DataInstance> dataInstances, String archetypeId) {
+    private List<DataInstance> filterDataInstancesWithModelId(List<DataInstance> dataInstances, String modelId) {
         return dataInstances.stream()
-                .filter(s -> archetypeId.equals(s.modelId()))
+                .filter(s -> modelId.equals(s.modelId()))
                 .collect(Collectors.toList());
     }
 

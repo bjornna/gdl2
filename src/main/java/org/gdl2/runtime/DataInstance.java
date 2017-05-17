@@ -127,6 +127,15 @@ public class DataInstance {
         return this.modelId;
     }
 
+    /**
+     * Get the object at root path.
+     *
+     * @return the object or null if not found
+     */
+    public Object getRoot() {
+        return get("/");
+    }
+
     public static class Builder {
         private DataInstance dataInstance = new DataInstance();
 

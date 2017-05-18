@@ -1,0 +1,33 @@
+{
+  "resourceType": "MedicationRequest",
+  "status": "draft",
+  "intent": "{$gt0000}",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "{$gt0001}",
+        "code": "{$gt0002}",
+        "display": "{$gt0003}"
+      }
+    ]
+  },
+  "dosageInstruction": [
+    {
+      "sequence": "{$gt0004}",
+      "text": "{$gt0005}{$gt0006} once daily",
+      "timing": {
+        "repeat": {
+          "frequency": "{$gt0007}",
+          "period": "{$gt0008}",
+          "periodUnit": "{$gt0009}"
+        }
+      },
+      "doseQuantity": {
+        "value": "{$gt0005}",
+        "unit": "{$gt0006}",
+        "system": "{$gt0010}",
+        "code": "{$gt0006}"
+      }
+    }
+  ]
+}

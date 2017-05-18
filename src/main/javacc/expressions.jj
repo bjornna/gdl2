@@ -442,7 +442,7 @@ ExpressionItem expression_node() :
   ExpressionItem item = null;
   ExpressionItem item2 = null;
   OperatorKind op = null;
-  List<AssignmentExpression> assignmentExpressions = null;
+  List<AssignmentExpression> assignmentExpressions = java.util.Collections.EMPTY_LIST;
   Token t = null;
   String attrId = null;
   int position = 1;
@@ -471,9 +471,11 @@ ExpressionItem expression_node() :
       {
         return FunctionalExpression.create(new Function(t.image), item);
       }
-    | t = < SYM_USE_TEMPLATE > < SYM_L_PARENTHESIS > variable = variable() < SYM_R_PARENTHESIS >
+    | t = < SYM_USE_TEMPLATE > < SYM_L_PARENTHESIS > variable = variable()
+                [ assignmentExpressions = assignmentExpressions() ]
+          < SYM_R_PARENTHESIS >
       {
-        return new UseTemplateExpression(variable);
+        return new UseTemplateExpression(variable, assignmentExpressions);
       }
     |
       LOOKAHEAD(2)
@@ -668,7 +670,13 @@ ConstantExpression constant_expression() :
       return new OrdinalConstant(ordinal);
     }
   | t = < V_REAL >
+    {
+      return new DoubleConstant(t.image);
+    }
   | t = < V_INTEGER >
+    {
+      return new IntegerConstant(t.image);
+    }
   | t = < V_PROPORTION >
   | t = <V_DATE>
   | t = <V_DATE_TIME_Z>

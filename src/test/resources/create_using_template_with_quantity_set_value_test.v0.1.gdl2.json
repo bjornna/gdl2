@@ -1,0 +1,91 @@
+{
+  "gdl_version": "0.1",
+  "id": "create_json_block.v0.1",
+  "concept": "gt0001",
+  "language": {
+    "original_language": "ISO_639-1::en",
+    "description": {
+      "original_author": {
+        "name": "Author",
+        "organisation": "Cambio Healthcare Systems",
+        "email": ""
+      },
+      "details": {
+        "en": {
+          "id": "en",
+          "purpose": "Sample fhir-based cds-rules for demonstration purpose",
+          "keywords": [
+            "Diabetes"
+          ]
+        }
+      }
+    }
+  },
+  "definition": {
+    "data_bindings": {
+      "gt0010": {
+        "id": "gt0010",
+        "model_id": "org.hl7.fhir.dstu3.model.MedicationStatement",
+        "type": "INPUT",
+        "elements": {
+          "gt0011": {
+            "id": "gt0011",
+            "path": "/medicationCodeableConcept/coding[0]"
+          }
+        },
+        "predicates": [
+          "/medicationCodeableConcept/coding[0] is_a local::gt0012|Statin|"
+        ]
+      }
+    },
+    "templates": {
+      "gt0022": {
+        "id": "gt0022",
+        "model_id": "org.gdl2.datatypes.DvQuantity",
+        "object": {
+          "units": "mg",
+          "magnitude": "{$gt2000}",
+          "precision": 1
+        }
+      }
+    },
+    "rules": {
+      "gt0034": {
+        "id": "gt0034",
+        "priority": 1,
+        "when": [
+          "$gt0011==null"
+        ],
+        "then": [
+          "use_template($gt0022($gt2000=8.5))"
+        ]
+      }
+    }
+  },
+  "ontology": {
+    "term_definitions": {
+      "en": {
+        "id": "en",
+        "terms": {
+          "gt0011": {
+            "id": "gt0011",
+            "text": "Statin treatment",
+            "description": "The generic name of the drug which is an alternative name to the name of medication"
+          }
+        }
+      }
+    },
+    "term_bindings": {
+      "ATC": {
+        "id": "ATC",
+        "bindings": {
+          "gt0012": {
+            "codes": [
+              "ATC::C10AA05"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

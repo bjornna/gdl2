@@ -1,0 +1,33 @@
+{
+  "resourceType": "MedicationRequest",
+  "status": "draft",
+  "intent": "plan",
+  "medicationCodeableConcept": {
+    "coding": [
+      {
+        "system": "http://www.whocc.no/atc",
+        "code": "C10AA05",
+        "display": "atorvastatin"
+      }
+    ]
+  },
+  "dosageInstruction": [
+    {
+      "sequence": 1,
+      "text": "7.0mg once daily",
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d"
+        }
+      },
+      "doseQuantity": {
+        "value": 7,
+        "unit": "mg",
+        "system": "http://unitsofmeasure.org",
+        "code": "mg"
+      }
+    }
+  ]
+}

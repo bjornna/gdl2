@@ -56,7 +56,7 @@ public class TestCommon {
         return (AssignmentExpression) parseExpression(expression);
     }
 
-    private String loadJson(String name) throws Exception {
+    String loadJson(String name) throws Exception {
         return IOUtils.toString(this.getClass().getClassLoader().getResourceAsStream((name + ".json")), "UTF-8");
     }
 

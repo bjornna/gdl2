@@ -1,6 +1,7 @@
 package org.gdl2.runtime;
 
 import org.gdl2.datatypes.DvOrdinal;
+import org.gdl2.datatypes.DvQuantity;
 import org.gdl2.model.Guideline;
 import org.hl7.fhir.dstu3.model.Appointment;
 import org.hl7.fhir.dstu3.model.Goal;
@@ -33,10 +34,31 @@ public class UseTemplateExpressionTest extends TestCommon {
         guideline = loadGuideline("create_using_template_with_ordinal_test.v0.1.gdl2");
         List<Guideline> guidelines = Collections.singletonList(guideline);
         output = interpreter.executeGuidelines(guidelines, input);
-        assertThat(output.size(), is(1));
-        assertThat(output.get(0).get("/"), instanceOf(DvOrdinal.class));
+        assertThat(output.get(0).getRoot(), instanceOf(DvOrdinal.class));
         DvOrdinal dvOrdinal = (DvOrdinal) output.get(0).get("/");
         assertThat(dvOrdinal.toString(), is("3|ATC::C10AA05|atorvastatin|"));
+    }
+
+    @Test
+    public void can_use_template_create_gdl2_quantity() throws Exception {
+        interpreter = new Interpreter();
+        guideline = loadGuideline("create_using_template_with_quantity_test.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
+        DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
+        assertThat(dvQuantity.toString(), is("7.5,mg"));
+    }
+
+    @Test
+    public void can_use_template_create_gdl2_quantity_with_set_value_within_use_template_statement() throws Exception {
+        interpreter = new Interpreter();
+        guideline = loadGuideline("create_using_template_with_quantity_set_value_test.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
+        DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
+        assertThat(dvQuantity.toString(), is("8.5,mg"));
     }
 
     @Test
@@ -47,9 +69,8 @@ public class UseTemplateExpressionTest extends TestCommon {
         guideline = loadGuideline("create_using_template_with_fhir_resources_test.v0.1.gdl2");
         List<Guideline> guidelines = Collections.singletonList(guideline);
         output = interpreter.executeGuidelines(guidelines, input);
-        assertThat(output.size(), is(3));
-        assertTrue(output.get(0).get("/") instanceof MedicationRequest);
-        assertTrue(output.get(1).get("/") instanceof Goal);
-        assertTrue(output.get(2).get("/") instanceof Appointment);
+        assertTrue(output.get(0).getRoot() instanceof MedicationRequest);
+        assertTrue(output.get(1).getRoot() instanceof Goal);
+        assertTrue(output.get(2).getRoot() instanceof Appointment);
     }
 }

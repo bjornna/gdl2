@@ -30,11 +30,13 @@ public class Interpreter {
     private static final long HOUR_IN_MILLISECONDS = 3600 * 1000L;
     private Map<String, Object> systemParameters;
     private ObjectCreatorPlugin objectCreatorPlugin;
+    private TemplateFiller templateFiller;
 
     public Interpreter() {
         this.systemParameters = new HashMap<>();
         this.systemParameters.put(CURRENT_DATETIME, new DvDateTime());
         this.objectCreatorPlugin = new DefaultObjectCreator();
+        this.templateFiller = new TemplateFiller();
     }
 
     public Interpreter(Map<String, Object> systemParameters) {
@@ -258,7 +260,7 @@ public class Interpreter {
             if (thenStatement instanceof AssignmentExpression) {
                 performAssignmentStatements((AssignmentExpression) thenStatement, input, typeMap, result);
             } else if (thenStatement instanceof UseTemplateExpression) {
-                performUseTemplateStatement((UseTemplateExpression) thenStatement, templateMap, result);
+                performUseTemplateStatement((UseTemplateExpression) thenStatement, templateMap, input, result);
             }
             mergeValueMapIntoListValueMap(result, input);
         }
@@ -303,6 +305,9 @@ public class Interpreter {
                 if (value instanceof String) {
                     DvQuantity newQuantity = new DvQuantity(dvQuantity.getUnits(), dvQuantity.getMagnitude(), Integer.parseInt((String) value));
                     result.put(variable.getCode(), newQuantity);
+                } else if (value instanceof Integer) {
+                    DvQuantity newQuantity = new DvQuantity(dvQuantity.getUnits(), dvQuantity.getMagnitude(), (Integer) value);
+                    result.put(variable.getCode(), newQuantity);
                 } else {
                     throw new IllegalArgumentException("Unexpected integer value: " + value + ", in assignmentExpression: " + assignmentExpression);
                 }
@@ -334,18 +339,26 @@ public class Interpreter {
         }
     }
 
-    void performUseTemplateStatement(UseTemplateExpression useTemplateExpression, Map<String, Template> templateMap, Map<String, Object> result) {
+    void performUseTemplateStatement(UseTemplateExpression useTemplateExpression, Map<String, Template> templateMap,
+                                     Map<String, List<Object>> input, Map<String, Object> result) {
         Variable variable = useTemplateExpression.getVariable();
         String attribute = variable.getCode();
         Template template = templateMap.get(attribute);
-        if (template != null) {
-            try {
-                Object object = this.objectCreatorPlugin.create(template.getModelId(), template.getObject());
-                result.put(variable.getCode(), object);
-            } catch (ClassNotFoundException cnf) {
-                System.out.println("failed to create object using template(" + template.getModelId() + "), class not found..");
-                cnf.printStackTrace();
-            }
+        if (template == null) {
+            return;
+        }
+        Map<String, Object> useTemplateLocalResult = new HashMap<>();
+        for (AssignmentExpression assignmentExpression : useTemplateExpression.getAssignmentExpressions()) {
+            Object value = evaluateExpressionItem(assignmentExpression.getAssignment(), input);
+            useTemplateLocalResult.put(assignmentExpression.getVariable().getCode(), value);
+        }
+        this.templateFiller.traverseMapAndReplaceAllVariablesWithValues(template.getObject(), useTemplateLocalResult);
+        try {
+            Object object = this.objectCreatorPlugin.create(template.getModelId(), template.getObject());
+            result.put(variable.getCode(), object);
+        } catch (ClassNotFoundException cnf) {
+            System.out.println("failed to create object using template(" + template.getModelId() + "), class not found..");
+            cnf.printStackTrace();
         }
     }
 
@@ -368,6 +381,9 @@ public class Interpreter {
                 } else if (value instanceof Long) {
                     magnitude = ((Long) value).doubleValue();
                     result.put(variable.getCode(), new DvQuantity(dvQuantity.getUnits(), ((Long) value).doubleValue(), dvQuantity.getPrecision()));
+                } else if (value instanceof Integer) {
+                    magnitude = ((Integer) value).doubleValue();
+                    result.put(variable.getCode(), new DvQuantity(dvQuantity.getUnits(), ((Integer) value).doubleValue(), dvQuantity.getPrecision()));
                 } else if (value instanceof String) {
                     magnitude = Double.parseDouble((String) value);
                 } else {
@@ -436,7 +452,11 @@ public class Interpreter {
     }
 
     private Object evaluateConstantExpression(ExpressionItem expressionItem) {
-        if (expressionItem instanceof CodedTextConstant) {
+        if (expressionItem instanceof DoubleConstant) {
+            return ((DoubleConstant) expressionItem).getDoubleValue();
+        } else if (expressionItem instanceof IntegerConstant) {
+            return ((IntegerConstant) expressionItem).getIntegerValue();
+        } else if (expressionItem instanceof CodedTextConstant) {
             return ((CodedTextConstant) expressionItem).getCodedText();
         } else if (expressionItem instanceof OrdinalConstant) {
             return ((OrdinalConstant) expressionItem).getOrdinal();
@@ -610,8 +630,12 @@ public class Interpreter {
         if (leftValue == null && rightValue == null) {
             return true;
         } else if (leftValue != null) {
-            if (leftValue instanceof DvCount && (rightValue instanceof String)) {
-                return ((DvCount) leftValue).getMagnitude() == Integer.parseInt((String) rightValue);
+            if (leftValue instanceof DvCount) {
+                if (rightValue instanceof String) {
+                    return ((DvCount) leftValue).getMagnitude() == Integer.parseInt((String) rightValue);
+                } else if (rightValue instanceof Integer) {
+                    return ((DvCount) leftValue).getMagnitude() == (Integer) rightValue;
+                }
             } else if ((leftValue instanceof DvBoolean && rightValue != null)) {
                 boolean rightValueBoolean = Boolean.valueOf(rightValue.toString());
                 return ((DvBoolean) leftValue).getValue() == rightValueBoolean;

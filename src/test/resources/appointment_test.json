@@ -1,0 +1,43 @@
+{
+  "resourceType": "Appointment",
+  "status": "proposed",
+  "appointmentType": {
+    "coding": [
+      {
+        "system": "http://hl7.org/fhir/v2/0276",
+        "code": "FOLLOWUP",
+        "display": "FOLLOWUP"
+      }
+    ]
+  },
+  "description": "Follow up to check the results of Statin Treatment",
+  "participant": [
+    {
+      "actor": {
+        "reference": "Patient/123456"
+      },
+      "required": "required",
+      "status": "needs-action"
+    },
+    {
+      "type": [
+        {
+          "coding": [
+            {
+              "system": "http://hl7.org/fhir/v3/ParticipationType",
+              "code": "ATND"
+            }
+          ]
+        }
+      ],
+      "required": "required",
+      "status": "needs-action"
+    }
+  ],
+  "requestedPeriod": [
+    {
+      "start": "{$gt2000}",
+      "end": "{$gt2001}"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 package org.gdl2.runtime;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -12,6 +15,7 @@ class TemplateFiller {
             + "(\\.)(\\p{XDigit}+)))[pP][+-]?(\\p{Digit}+)))[fFdD]?))[\\x00-\\x20]*";
     private static final Pattern DOUBLE_NUM = Pattern.compile(DOUBLE_NUM_PATTERN);
     private static final Pattern INTEGER_NUM = Pattern.compile("^-?\\d+$");
+    private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     String replaceVariablesWithValues(String source, Map<String, Object> values) {
         StringBuffer stringBuffer = new StringBuffer();
@@ -21,7 +25,13 @@ class TemplateFiller {
             String text = matcher.group();
             Object value = values.get(text.substring(2, text.length() - 1));
             if (value != null) {
-                matcher.appendReplacement(stringBuffer, value.toString());
+                String stringValue;
+                if (value instanceof Date) {
+                    stringValue = dateFormat.format((Date) value);
+                } else {
+                    stringValue = value.toString();
+                }
+                matcher.appendReplacement(stringBuffer, stringValue);
             }
         }
         matcher.appendTail(stringBuffer);

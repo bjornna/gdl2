@@ -5,6 +5,8 @@ import org.gdl2.datatypes.DvDateTime;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -95,6 +97,17 @@ public class TemplateFillerTests extends TestCommon {
         values.put("gt0010", "http://unitsofmeasure.org");
         templateFiller.traverseMapAndReplaceAllVariablesWithValues(map, values);
         Map expected = new Gson().fromJson(loadJson("medication_request_test_expected"), Map.class);
+        assertEquals(map, expected);
+    }
+
+    @Test
+    public void can_traverse_map_fill_datetime_values() throws Exception {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Map map = new Gson().fromJson(loadJson("appointment_test"), Map.class);
+        values.put("gt2000", dateFormat.parse("2013-04-20"));
+        values.put("gt2001", dateFormat.parse("2013-04-25"));
+        templateFiller.traverseMapAndReplaceAllVariablesWithValues(map, values);
+        Map expected = new Gson().fromJson(loadJson("appointment_test_expected"), Map.class);
         assertEquals(map, expected);
     }
 }

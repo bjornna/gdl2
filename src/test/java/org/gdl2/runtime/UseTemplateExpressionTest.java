@@ -1,7 +1,9 @@
 package org.gdl2.runtime;
 
+import org.gdl2.datatypes.DvDateTime;
 import org.gdl2.datatypes.DvOrdinal;
 import org.gdl2.datatypes.DvQuantity;
+import org.gdl2.expression.DateTimeConstant;
 import org.gdl2.model.Guideline;
 import org.hl7.fhir.dstu3.model.Appointment;
 import org.hl7.fhir.dstu3.model.Goal;
@@ -9,6 +11,8 @@ import org.hl7.fhir.dstu3.model.MedicationRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -59,6 +63,22 @@ public class UseTemplateExpressionTest extends TestCommon {
         assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
         assertThat(dvQuantity.toString(), is("8.5,mg"));
+    }
+
+    @Test
+    public void can_use_template_create_gdl2_datetime_constant_with_set_value_within_use_template_statement() throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put(Interpreter.CURRENT_DATETIME, DvDateTime.valueOf("2013-04-20T14:00:00"));
+        params.put(Interpreter.OBJECT_CREATOR, new FhirDstu3ResourceCreator());
+        interpreter = new Interpreter(params);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        guideline = loadGuideline("create_using_template_with_fhir_appointment_set_datetime_test.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(Appointment.class));
+        Appointment appointment = (Appointment) output.get(0).getRoot();
+        assertThat(appointment.getRequestedPeriod().get(0).getStart(), is(dateFormat.parse("2013-04-20")));
+        assertThat(appointment.getRequestedPeriod().get(0).getEnd(), is(dateFormat.parse("2013-04-25")));
     }
 
     @Test

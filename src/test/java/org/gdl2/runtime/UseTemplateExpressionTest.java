@@ -1,8 +1,6 @@
 package org.gdl2.runtime;
 
-import org.gdl2.datatypes.DvDateTime;
-import org.gdl2.datatypes.DvOrdinal;
-import org.gdl2.datatypes.DvQuantity;
+import org.gdl2.datatypes.*;
 import org.gdl2.model.Guideline;
 import org.hl7.fhir.dstu3.model.Appointment;
 import org.hl7.fhir.dstu3.model.Goal;
@@ -62,6 +60,34 @@ public class UseTemplateExpressionTest extends TestCommon {
         assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
         DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
         assertThat(dvQuantity.toString(), is("8.5,mg"));
+    }
+
+    @Test
+    public void can_use_template_create_quantity_with_twice_each_with_different_double_variable() throws Exception {
+        interpreter = new Interpreter();
+        guideline = loadGuideline("use_template_with_quantity_twice_set_value_test.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
+        DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
+        assertThat(dvQuantity.toString(), is("3.5,mg")); // only the last set value counts
+    }
+
+    @Test
+    public void can_use_template_create_quantity_with_calculated_double_variable() throws Exception {
+        interpreter = new Interpreter();
+        guideline = loadGuideline("use_template_with_quantity_set_calculated_value_test.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        input.add(new DataInstance.Builder()
+                .modelId("org.hl7.fhir.dstu3.model.Observation")
+                .addValue("/code/coding[0]", DvCodedText.valueOf("LOINC::13457-7|LDL Cholesterol|"))
+                .addValue("/valueQuantity", DvQuantity.builder().magnitude(10.0).precision(1).units("mmol/l").build())
+                .addValue("/issued", new DvDateTime())
+                .build());
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(DvQuantity.class));
+        DvQuantity dvQuantity = (DvQuantity) output.get(0).getRoot();
+        assertThat(dvQuantity.toString(), is("5.0,mg")); // only the last set value counts
     }
 
     @Test

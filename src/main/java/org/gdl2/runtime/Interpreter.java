@@ -352,9 +352,10 @@ public class Interpreter {
             Object value = evaluateExpressionItem(assignmentExpression.getAssignment(), input);
             useTemplateLocalResult.put(assignmentExpression.getVariable().getCode(), value);
         }
-        this.templateFiller.traverseMapAndReplaceAllVariablesWithValues(template.getObject(), useTemplateLocalResult);
+        Map<String, Object> localMapCopy = new HashMap<>(template.getObject());
+        this.templateFiller.traverseMapAndReplaceAllVariablesWithValues(localMapCopy, useTemplateLocalResult);
         try {
-            Object object = this.objectCreatorPlugin.create(template.getModelId(), template.getObject());
+            Object object = this.objectCreatorPlugin.create(template.getModelId(), localMapCopy);
             result.put(variable.getCode(), object);
         } catch (ClassNotFoundException cnf) {
             System.out.println("failed to create object using template(" + template.getModelId() + "), class not found..");

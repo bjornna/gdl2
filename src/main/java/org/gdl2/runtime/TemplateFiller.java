@@ -2,6 +2,8 @@ package org.gdl2.runtime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,9 @@ class TemplateFiller {
             if (value != null) {
                 String stringValue;
                 if (value instanceof Date) {
-                    stringValue = dateFormat.format((Date) value);
+                    stringValue = dateFormat.format(value);
+                } else if (value instanceof LocalDateTime) {
+                    stringValue = ((LocalDateTime) value).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
                 } else {
                     stringValue = value.toString();
                 }

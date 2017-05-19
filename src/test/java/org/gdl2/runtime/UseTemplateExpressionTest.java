@@ -66,9 +66,7 @@ public class UseTemplateExpressionTest extends TestCommon {
 
     @Test
     public void can_use_template_create_3_fhir_domain_resources() throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put(Interpreter.OBJECT_CREATOR, new FhirDstu3ResourceCreator());
-        interpreter = new Interpreter(params);
+        interpreter = buildInterpreterWithFhirPluginAndCurrentDateTime();
         guideline = loadGuideline("use_template_with_fhir_resources_test.v0.1.gdl2");
         List<Guideline> guidelines = Collections.singletonList(guideline);
         output = interpreter.executeGuidelines(guidelines, input);
@@ -79,17 +77,52 @@ public class UseTemplateExpressionTest extends TestCommon {
 
     @Test
     public void can_use_template_create_fhir_appointment_with_datetime_variable() throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put(Interpreter.CURRENT_DATETIME, DvDateTime.valueOf("2013-04-20T14:00:00"));
-        params.put(Interpreter.OBJECT_CREATOR, new FhirDstu3ResourceCreator());
-        interpreter = new Interpreter(params);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        interpreter = buildInterpreterWithFhirPluginAndCurrentDateTime("2013-04-20T14:00:00");
         guideline = loadGuideline("use_template_fhir_appointment_set_datetime_test.v0.1.gdl2");
         List<Guideline> guidelines = Collections.singletonList(guideline);
         output = interpreter.executeGuidelines(guidelines, input);
         assertThat(output.get(0).getRoot(), instanceOf(Appointment.class));
         Appointment appointment = (Appointment) output.get(0).getRoot();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         assertThat(appointment.getRequestedPeriod().get(0).getStart(), is(dateFormat.parse("2013-04-20")));
         assertThat(appointment.getRequestedPeriod().get(0).getEnd(), is(dateFormat.parse("2013-04-25")));
+    }
+
+    @Test
+    public void can_use_template_create_fhir_appointment_with_current_datetime_variable() throws Exception {
+        interpreter = buildInterpreterWithFhirPluginAndCurrentDateTime("2013-04-20T14:00:00");
+        guideline = loadGuideline("use_template_fhir_appointment_set_with_current_datetime.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(Appointment.class));
+        Appointment appointment = (Appointment) output.get(0).getRoot();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        assertThat(dateFormat.format(appointment.getRequestedPeriod().get(0).getStart()), is("2013-04-20T14:00:00"));
+    }
+
+    @Test
+    public void can_use_template_create_fhir_appointment_with_calculated_datetime_variable() throws Exception {
+        interpreter = buildInterpreterWithFhirPluginAndCurrentDateTime("2013-04-20T14:00:00");
+        guideline = loadGuideline("use_template_fhir_appointment_set_with_calculated_datetime.v0.1.gdl2");
+        List<Guideline> guidelines = Collections.singletonList(guideline);
+        output = interpreter.executeGuidelines(guidelines, input);
+        assertThat(output.get(0).getRoot(), instanceOf(Appointment.class));
+        Appointment appointment = (Appointment) output.get(0).getRoot();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        assertThat(dateFormat.format(appointment.getRequestedPeriod().get(0).getStart()), is("2013-04-20T14:00:00"));
+        assertThat(dateFormat.format(appointment.getRequestedPeriod().get(0).getEnd()), is("2013-07-20T14:00:00"));
+    }
+
+    private Interpreter buildInterpreterWithFhirPluginAndCurrentDateTime(String datetime) {
+        Map<String, Object> params = new HashMap<>();
+        if(datetime != null) {
+            params.put(Interpreter.CURRENT_DATETIME, DvDateTime.valueOf(datetime));
+        }
+        params.put(Interpreter.OBJECT_CREATOR, new FhirDstu3ResourceCreator());
+        return new Interpreter(params);
+    }
+
+    private Interpreter buildInterpreterWithFhirPluginAndCurrentDateTime() {
+        return buildInterpreterWithFhirPluginAndCurrentDateTime(null);
     }
 }

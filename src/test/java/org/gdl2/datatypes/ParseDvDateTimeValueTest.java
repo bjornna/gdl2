@@ -31,4 +31,10 @@ public class ParseDvDateTimeValueTest {
         DvDateTime dateTime = DvDateTime.valueOf("2012-01-10T05:07:15");
         assertThat(dateTime.toString(), is("2012-01-10T05:07:15"));
     }
+
+    @Test
+    public void can_print_iso_formatted_string_with_zero_seconds() {
+        DvDateTime dateTime = DvDateTime.valueOf("2012-01-10T05:07:00");
+        assertThat(dateTime.toString(), is("2012-01-10T05:07:00"));
+    }
 }

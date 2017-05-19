@@ -2,10 +2,14 @@ package org.gdl2.datatypes;
 
 import lombok.Value;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Value
 public final class DvDateTime {
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private LocalDateTime dateTime;
 
     private DvDateTime(LocalDateTime dateTime) {
@@ -23,6 +27,6 @@ public final class DvDateTime {
 
     @Override
     public String toString() {
-        return dateTime.toString();
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(dateTime);
     }
 }
